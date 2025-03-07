@@ -4,7 +4,11 @@ Repositório para o projeto Fichário do Mestre
 ### Configuração do SDK do Firebase
 ```bash
 npm install firebase
+npm install react-dnd react-dnd-html5-backend
+npm install tailwindcss @tailwindcss/vite
 ```
+
+As chaves de API estão no Discord, entre em contato. 
 
 # React + TypeScript + Vite
 
