@@ -5,6 +5,14 @@ Repositório para o projeto Fichário do Mestre
 ```bash
 npm install firebase
 ```
+Instale a CLI do firebase
+```bash
+npm install -g firebase-tools
+```
+Faça login
+```bash
+firebase login
+```
 
 Bibliotecas Usadas:
 react drag-and-drop
