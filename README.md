@@ -21,7 +21,3 @@ tailwind css
 As chaves de API estão no Discord, entre em contato.
 
 Insira o arquivo com as chaves API no diretório raiz do projeto.
-
-Para rodar o código utilize
-
-npm run dev
