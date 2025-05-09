@@ -4,11 +4,12 @@ import Login from "./Login";
 import Upload from "./Upload";
 import Mostrar from "./Mostrar";
 import CriarConta from "./Cadastro";
+import Home from "./pages/Home";
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Home />} />
       <Route
         path="/upload"
         element={
