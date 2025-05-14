@@ -1,7 +1,7 @@
 // src/Cadastro.tsx
 import { useState } from "react";
-import { registerWithEmail } from "./backend/auth";
-import { useNavigate } from "react-router-dom";
+import { registerWithEmail } from "../backend/auth";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function CriarConta() {
   // declarando as constantes do email e da senha
@@ -11,7 +11,6 @@ export default function CriarConta() {
 
   // declarando o método de navegação
   const navigate = useNavigate();
-
   // método de cadastro
   const handleCadastro = async () => {
     if (senha !== confirmarSenha) {
@@ -60,9 +59,8 @@ export default function CriarConta() {
         >
           Cadastrar
         </button>
-        <p onClick={() => navigate("/login")}
-        className="mt-4 underline cursor-pointer hover:opacity-70">
-          Já tem conta? Fazer login
+        <p className={"mt-4 cursor-pointer hover:opacity-70  text-inherit"} >
+          <NavLink to={"/login"} >Login</NavLink>
         </p>
       </div>
     </div>

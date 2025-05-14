@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { loginWithEmail } from "./backend/auth";
-import { useNavigate } from "react-router"
+import { loginWithEmail } from "../backend/auth";
+import { NavLink, useNavigate } from "react-router"
 
 export default function Login() {
   // declarando as constantes do email e da senha
@@ -46,9 +46,10 @@ export default function Login() {
         >
           Entrar
         </button>
-        <p onClick={() => navigate("/criar-conta")}
-        className="mt-4 underline cursor-pointer hover:opacity-70">
-          Cadastrar-se
+
+
+        <p className="mt-4 cursor-pointer hover:opacity-70">
+          <NavLink to={'/cadastro'}>Cadastre-se</NavLink>
         </p>
         
       </div>
