@@ -19,6 +19,7 @@ react drag-and-drop
 tailwind css
 
 As chaves de API estão no Discord, entre em contato.
+Lembre-se de alterar o arquivo para .env ao invés de apenas env, caso o contrário o site nn ira funcionar
 
 Insira o arquivo com as chaves API no diretório raiz do projeto.
 

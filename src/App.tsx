@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import CriarConta from "./pages/Cadastro";
 import Home from "./pages/Home";
+import User from "./pages/User";
 
 export default function App() {
   return (
@@ -18,6 +19,12 @@ export default function App() {
         path="/login"
         element={
             <Login />
+        }
+      />
+          <Route
+        path="/user"
+        element={
+            <User />
         }
       />
     </Routes>

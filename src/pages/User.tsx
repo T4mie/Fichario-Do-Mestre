@@ -1,5 +1,13 @@
+import Mainheader from "../components/headers/Mainheader";
+import Tabs from "./tabs/Tabs";
+
 const User = () => {
-    return <h1>User</h1>;
+    return(
+      <div>
+      <Mainheader></Mainheader>
+      <Tabs></Tabs>
+      </div>
+    );
   };
   
   export default User;
