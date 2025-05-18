@@ -4,29 +4,18 @@ import Login from "./pages/Login";
 import CriarConta from "./pages/Cadastro";
 import Home from "./pages/Home";
 import User from "./pages/User";
+import CriarPersonagem from "./pages/CriarPersonagem";
+import MostrarPersonagem from "./pages/Personagem";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route 
-        path="/cadastro"
-        element={
-          <CriarConta />
-        }
-      />
-      <Route
-        path="/login"
-        element={
-            <Login />
-        }
-      />
-          <Route
-        path="/user"
-        element={
-            <User />
-        }
-      />
+      <Route path="/cadastro" element={<CriarConta />}/>
+      <Route path="/login" element={<Login />}/>
+      <Route path="/user" element={<User />}/>
+      <Route path="/criar-personagem" element={<CriarPersonagem />}/>
+      <Route path="/personagens/:nome" element={<MostrarPersonagem/>}/>
     </Routes>
   );
 }

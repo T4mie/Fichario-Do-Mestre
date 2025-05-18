@@ -15,7 +15,7 @@ export default function Login() {
     try {
       await loginWithEmail(email, senha);// <- chama a função loginWithEmail do auth
       alert("Login feito com sucesso!");
-      navigate("/upload"); // <- redireciona para a página de upload
+      navigate("/user");
     } catch (error) {
       alert("Erro no login: " + (error as Error).message);
     }

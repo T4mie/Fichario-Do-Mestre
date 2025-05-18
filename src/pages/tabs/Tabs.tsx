@@ -1,15 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getCurrentUser } from "../../backend/auth";
+import { getCharacters } from "../../backend/firestore";
 import "./Tabs.css";
+
+import AddButton from "../../components/bodys/AddButton";
+import CharacterButton from "../../components/bodys/CharacterButton";
 
 function Tabs() {
   const [toggle, setToggle] = useState(1);
+  const [personagens, setPersonagens] = useState<string[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    buscarPersonagens();
+  }, []);
+
+  const buscarPersonagens = async () => {
+      try {
+        const user = getCurrentUser();
+        const characters = await getCharacters(user.uid);
+        const nomes = characters.map((personagem) => personagem.id);
+        setPersonagens(nomes);
+      } catch (error) {
+        alert("Erro ao buscar personagens: " + (error as Error).message);
+      }
+    };
 
   function updateToggle(id: number) {
     setToggle(id);
   }
 
   return (
-    <div className="d-flex justify-center ">
+    <div className="d-flex justify-center">
       <div className="col-6 tab p-5">
         {/* Títulos das tabs */}
         <ul className="tab-list">
@@ -27,11 +50,21 @@ function Tabs() {
           </li>
         </ul>
 
-        {/* Conteúdos */}
+        {/* Conteúdo da tab Personagens */}
         <div className={toggle === 1 ? "show-content " : "content"}>
-          <h2>Seus Personagens</h2>
-          <p>AQUI Ó</p>
+          <AddButton onClick={() => navigate("/criar-personagem")}/>
+          {personagens.map((nome) => (
+            <CharacterButton
+              key={nome}
+              nome={nome}
+              onView={() => navigate(`/personagens/${nome}`)}
+              onEdit={() => navigate(`/editar-personagem/${nome}`)}
+              onDelete={() => alert(`Deletar personagem "${nome}"`)}
+            />
+          ))}
         </div>
+
+        {/* Outras tabs */}
         <div className={toggle === 2 ? "show-content" : "content"}>
           <h2>Seus Modelos</h2>
           <p>Modelos UAU</p>
@@ -42,7 +75,7 @@ function Tabs() {
         </div>
         <div className={toggle === 4 ? "show-content" : "content"}>
           <h2>Suas campanhas</h2>
-          <p>Camapanhas mágicas LEGAL</p>
+          <p>Campanhas mágicas LEGAL</p>
         </div>
       </div>
     </div>

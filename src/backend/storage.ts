@@ -4,10 +4,15 @@ import { storage } from "./firebase";
 
 // Função para fazer o upload da imagem
 export async function uploadImage(image: File, path: string) {
-  const storageRef = ref(storage, path);
-  await uploadBytes(storageRef, image);
-  const imageUrl = await getDownloadURL(storageRef);
-  return imageUrl;
+  try{
+    const storageRef = ref(storage, path);
+    await uploadBytes(storageRef, image);
+    const imageUrl = await getDownloadURL(storageRef);
+    return imageUrl;
+  }
+  catch (error) {
+    throw new Error("Erro ao enviar imagem: " + (error as Error).message);
+  }
 }
 
 // função para obter a url da imagem
