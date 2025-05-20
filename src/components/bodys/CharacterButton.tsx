@@ -5,28 +5,32 @@ import { getCurrentUser } from "../../backend/auth";
 import { getImageUrl } from "../../backend/storage";
 
 interface CharacterButtonProps {
-  nome: string;
-  onView: () => void;
+  characterId: string;
+  nome: string; // Nome do personagem
   onEdit: () => void;
   onDelete: () => void;
 }
 
 export default function CharacterButton({
+  characterId,
   nome,
-  onView,
   onEdit,
   onDelete,
 }: CharacterButtonProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [characterName, setCharacterName] = useState(nome);
 
   useEffect(() => {
     const fetchImage = async () => {
       try {
         const user = getCurrentUser();
-        const path = `users/${user.uid}/characters/${nome}/imagem.png`;
-        const url = await getImageUrl(path);
+        
+        // Get character image
+        const imagePath = `users/${user.uid}/characters/${characterId}/imagem.png`;
+        const url = await getImageUrl(imagePath);
         setImageUrl(url);
+        
       } catch (error) {
         console.error("Erro ao carregar imagem:", (error as Error).message);
         setImageUrl("https://firebasestorage.googleapis.com/v0/b/fichario-do-mestre.firebasestorage.app/o/app%2Fplaceholder.png?alt=media&token=6c4819be-3da7-4781-9396-519e67ae782b");
@@ -34,7 +38,7 @@ export default function CharacterButton({
     };
 
     fetchImage();
-  }, [nome]);
+  }, [characterId]);
 
   return (
     <div
@@ -45,7 +49,7 @@ export default function CharacterButton({
       {/* Imagem à esquerda */}
       <img
         src={imageUrl}
-        alt={nome}
+        alt={characterName}
         className="w-2/5 object-cover h-full rounded-l-xl"
       />
 
@@ -61,7 +65,7 @@ export default function CharacterButton({
             fontSize: '1.2rem',
           }}
         >
-          {nome}
+          {characterName}
         </p>
       </div>
 
@@ -73,8 +77,7 @@ export default function CharacterButton({
       {/* Menu flutuante */}
       {menuOpen && (
         <div className="absolute top-10 right-2 shadow z-20 w-32 text-sm">
-          <button onClick={onView} className="w-full px-4 py-2 hover:bg-gray-100 text-left">Visualizar</button>
-          <button onClick={onEdit} className="w-full px-4 py-2 hover:bg-gray-100 text-left">Editar</button>
+          <button onClick={onEdit} className="w-full px-4 py-2 hover:bg-gray-100 text-left">Acessar</button>
           <button onClick={onDelete} className="w-full px-4 py-2 text-red-600 hover:bg-red-50 text-left">Deletar</button>
         </div>
       )}

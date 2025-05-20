@@ -1,3 +1,4 @@
+// src/pages/tabs/Tabs.tsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../backend/auth";
@@ -9,7 +10,7 @@ import CharacterButton from "../../components/bodys/CharacterButton";
 
 function Tabs() {
   const [toggle, setToggle] = useState(1);
-  const [personagens, setPersonagens] = useState<string[]>([]);
+  const [personagens, setPersonagens] = useState<any[]>([]); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,15 +18,14 @@ function Tabs() {
   }, []);
 
   const buscarPersonagens = async () => {
-      try {
-        const user = getCurrentUser();
-        const characters = await getCharacters(user.uid);
-        const nomes = characters.map((personagem) => personagem.id);
-        setPersonagens(nomes);
-      } catch (error) {
-        alert("Erro ao buscar personagens: " + (error as Error).message);
-      }
-    };
+    try {
+      const user = getCurrentUser();
+      const characters = await getCharacters(user.uid);
+      setPersonagens(characters);
+    } catch (error) {
+      alert("Erro ao buscar personagens: " + (error as Error).message);
+    }
+  };
 
   function updateToggle(id: number) {
     setToggle(id);
@@ -52,15 +52,15 @@ function Tabs() {
 
         {/* Conteúdo da tab Personagens */}
         <div className={toggle === 1 ? "show-content " : "content"}>
-          <AddButton onClick={() => navigate("/criar-personagem")}/>
-          {personagens.map((nome) => (
-            <CharacterButton
-              key={nome}
-              nome={nome}
-              onView={() => navigate(`/personagens/${nome}`)}
-              onEdit={() => navigate(`/editar-personagem/${nome}`)}
-              onDelete={() => alert(`Deletar personagem "${nome}"`)}
-            />
+          <AddButton onClick={() => navigate("/criar-personagem")} />
+          {personagens.map((personagem) => (
+          <CharacterButton
+            key={personagem.id}
+            characterId={personagem.id}
+            nome={personagem.nome || "Sem Nome"}
+            onEdit={() => navigate(`/personagens/${personagem.id}`)}
+            onDelete={() => alert(`Deletar personagem "${personagem.nome}"`)}
+          />
           ))}
         </div>
 

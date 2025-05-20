@@ -5,7 +5,7 @@ import CriarConta from "./pages/Cadastro";
 import Home from "./pages/Home";
 import User from "./pages/User";
 import CriarPersonagem from "./pages/CriarPersonagem";
-import MostrarPersonagem from "./pages/Personagem";
+import EditarPersonagem from "./pages/Personagem";
 
 export default function App() {
   return (
@@ -15,7 +15,7 @@ export default function App() {
       <Route path="/login" element={<Login />}/>
       <Route path="/user" element={<User />}/>
       <Route path="/criar-personagem" element={<CriarPersonagem />}/>
-      <Route path="/personagens/:nome" element={<MostrarPersonagem/>}/>
+      <Route path="/personagens/:id" element={<EditarPersonagem/>}/>
     </Routes>
   );
 }
