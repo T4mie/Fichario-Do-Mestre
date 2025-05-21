@@ -13,7 +13,7 @@ export async function saveCharacterData(
   uid: string,                      // ID do usuário (quem criou o personagem)
   characterId: string,              // ID do personagem
   data: Record<string, any>,       // Objeto com os dados a serem salvos (ex: { forca: 10, destreza: 12, ... })
-  field: "atributos" | "pericias" | "personalidade"  // Nome do campo (mapa) que está sendo salvo
+  field: string  // Nome do campo (mapa) que está sendo salvo
 ) {
   try {
     // Cria uma referência ao documento do personagem no Firestore
@@ -48,7 +48,6 @@ export async function updateCharacterImage(uid: string, characterId: string, ima
     throw new Error("Error updating character image: " + (error as Error).message);
   }
 }
-
 
 
 export async function getCharacters(uid: string) {
@@ -88,4 +87,41 @@ export async function getCharacterById(uid: string, charId: string) {
     pericias: data.pericias || {},
     personalidade: data.personalidade || {},
   };
+}
+
+
+export async function getSystems(){
+  try {
+    const systemsRef = collection(database, "systems");
+    const querySnapshot = await getDocs(systemsRef);
+
+    const systems = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {data, id: doc.id};
+    });
+
+    return systems;
+  } catch (error) {
+    throw new Error('Error fetching systems: ' + (error as Error).message);
+  }
+}
+
+export async function createSheetModel(uid: string) {
+  const characterCollectionRef = collection(database, "users", uid, "models");
+  const docRef = await addDoc(characterCollectionRef, { nome: "" }); // apenas cria
+  return docRef.id;
+}
+
+export async function saveSheetModel(
+  uid: string,                    // ID do usuário (quem criou o modelo)
+  systemId: string,           // ID do sistema (ex: D&D, GURPS, etc)
+  modelName: string,          // Nome do modelo (ex: "Modelo de Personagem")
+  modelData: Record<string, any> // Dados do modelo (ex: { atributos: { forca: 10, destreza: 12 }, ... }
+) {
+  try {
+    const modelRef = collection(database, "users", uid, "models");
+    await addDoc(modelRef, { nome: modelName, sistema: systemId, data: modelData });
+  } catch (error) {
+    throw new Error('Error saving sheet model: ' + (error as Error).message);
+  }
 }

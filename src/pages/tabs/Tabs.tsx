@@ -66,8 +66,7 @@ function Tabs() {
 
         {/* Outras tabs */}
         <div className={toggle === 2 ? "show-content" : "content"}>
-          <h2>Seus Modelos</h2>
-          <p>Modelos UAU</p>
+          <AddButton onClick={() => navigate("/criar-modelo")} />
         </div>
         <div className={toggle === 3 ? "show-content" : "content"}>
           <h2>Seus Sistemas</h2>

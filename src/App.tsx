@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import User from "./pages/User";
 import CriarPersonagem from "./pages/CriarPersonagem";
 import EditarPersonagem from "./pages/Personagem";
+import CriarModelo from "./pages/CriarModelo";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
       <Route path="/login" element={<Login />}/>
       <Route path="/user" element={<User />}/>
       <Route path="/criar-personagem" element={<CriarPersonagem />}/>
+      <Route path="/criar-modelo" element={<CriarModelo />}/>
       <Route path="/personagens/:id" element={<EditarPersonagem/>}/>
     </Routes>
   );
