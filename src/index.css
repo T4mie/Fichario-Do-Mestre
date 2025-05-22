@@ -61,3 +61,27 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Barra de rolagem fina e discreta */
+::-webkit-scrollbar {
+  width: 6px;          /* largura vertical */
+  height: 6px;         /* altura horizontal */
+}
+
+/* Fundo da barra (track) */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* "Polegar" da barra (parte que desliza) */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  transition: background-color 0.3s;
+}
+
+/* Ao passar o mouse no polegar */
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
