@@ -21,7 +21,7 @@ export default function CriarConta() {
     try {
       await registerWithEmail(email, senha); // <- chama a função registerWithEmail do auth
       alert("Conta criada com sucesso!");
-      navigate("/upload"); // <- redireciona após criar
+      navigate("/user"); // <- redireciona após criar
     } catch (error) {
       alert("Erro ao criar conta: " + (error as Error).message);
     }
