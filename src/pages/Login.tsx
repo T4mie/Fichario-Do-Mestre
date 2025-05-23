@@ -1,27 +1,17 @@
+// src/pages/Login.tsx (ou onde estiver seu componente)
 import { useState } from "react";
-import { loginWithEmail } from "../backend/auth";
-import { NavLink, useNavigate } from "react-router"
+import { NavLink, useNavigate } from "react-router-dom";
+import { handleLogin } from "../utils/Login";
 
 export default function Login() {
-  // declarando as constantes do email e da senha
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  
-  // declarando o método de navegação
   const navigate = useNavigate();
 
-  // método de login
-  const handleLogin = async () => {
-    try {
-      await loginWithEmail(email, senha);// <- chama a função loginWithEmail do auth
-      alert("Login feito com sucesso!");
-      navigate("/user");
-    } catch (error) {
-      alert("Erro no login: " + (error as Error).message);
-    }
+  const onLoginClick = () => {
+    handleLogin(email, senha, navigate);
   };
 
-  // tela
   return (
     <div className="w-screen h-screen flex items-center justify-center bg-fundo">
       <div className="bg-caixa p-8 rounded-xl shadow-lg w-full max-w-md text-fundo text-center">
@@ -42,17 +32,15 @@ export default function Login() {
         />
         <button
           className="w-full bg-fundo text-caixa p-2 rounded hover:opacity-90"
-          onClick={handleLogin}
+          onClick={onLoginClick}
         >
           Entrar
         </button>
 
-
         <p className="mt-4 cursor-pointer hover:opacity-70">
-          <NavLink to={'/cadastro'}>Cadastre-se</NavLink>
+          <NavLink to={"/cadastro"}>Cadastre-se</NavLink>
         </p>
-        
       </div>
     </div>
-  );  
+  );
 }
