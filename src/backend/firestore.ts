@@ -1,5 +1,5 @@
 // src/backend/firestore.ts
-import { addDoc, collection, doc, getDoc, getDocs, updateDoc} from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, setDoc, updateDoc} from "firebase/firestore";
 import { database } from "./firebase";
 
 export async function createCharacter(uid: string) {
@@ -37,18 +37,6 @@ export async function saveCharacterData(
     throw new Error("Erro ao salvar dados do personagem: " + (error as Error).message);
   }
 }
-
-
-// Atualiza apenas a URL da imagem
-export async function updateCharacterImage(uid: string, characterId: string, imageUrl: string) {
-  try {
-    const characterDocRef = doc(database, "users", uid, "characters", characterId);
-    await updateDoc(characterDocRef, { imageUrl });
-  } catch (error) {
-    throw new Error("Error updating character image: " + (error as Error).message);
-  }
-}
-
 
 export async function getCharacters(uid: string) {
   try {
@@ -90,6 +78,16 @@ export async function getCharacterById(uid: string, charId: string) {
 }
 
 
+// Atualiza apenas a URL da imagem
+export async function updateCharacterImage(uid: string, characterId: string, imageUrl: string) {
+  try {
+    const characterDocRef = doc(database, "users", uid, "characters", characterId);
+    await updateDoc(characterDocRef, { imageUrl });
+  } catch (error) {
+    throw new Error("Error updating character image: " + (error as Error).message);
+  }
+}
+
 export async function getSystems(){
   try {
     const systemsRef = collection(database, "systems");
@@ -113,15 +111,49 @@ export async function createSheetModel(uid: string) {
 }
 
 export async function saveSheetModel(
-  uid: string,                    // ID do usuário (quem criou o modelo)
-  systemId: string,           // ID do sistema (ex: D&D, GURPS, etc)
-  modelName: string,          // Nome do modelo (ex: "Modelo de Personagem")
-  modelData: Record<string, any> // Dados do modelo (ex: { atributos: { forca: 10, destreza: 12 }, ... }
+  uid: string,
+  modelId: string,
+  systemId: string,
+  modelName: string,
+  components: {
+    id: string;
+    nome: string;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+  }[]
 ) {
   try {
-    const modelRef = collection(database, "users", uid, "models");
-    await addDoc(modelRef, { nome: modelName, sistema: systemId, data: modelData });
+    // Cria a referência ao documento do modelo
+    const modelDocRef = doc(database, "users", uid, "models", modelId);
+
+    // Monta os dados do modelo a serem salvos
+    const modelData = {
+      nome: modelName,       // Nome do modelo (string)
+      sistema: systemId,     // ID do sistema associado (string)
+      componente: components, // Lista de atributos com id, nome e posição (array de objetos)
+    };
+
+    // Salva os dados no documento com o ID fornecido
+    await setDoc(modelDocRef, modelData);
   } catch (error) {
-    throw new Error('Error saving sheet model: ' + (error as Error).message);
+    throw new Error("Erro ao salvar modelo de ficha: " + (error as Error).message);
+  }
+}
+
+export async function getSheetModels(uid: string) {
+  try {
+    const modelsRef = collection(database, "users", uid, "models");
+    const querySnapshot = await getDocs(modelsRef);
+
+    const models = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {data, id: doc.id};
+    });
+
+    return models;
+  } catch (error) {
+    throw new Error('Error fetching models: ' + (error as Error).message);
   }
 }

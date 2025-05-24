@@ -2,19 +2,22 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../backend/auth";
-import { getCharacters } from "../../backend/firestore";
+import { getCharacters, getSheetModels } from "../../backend/firestore";
 import "./Tabs.css";
 
 import AddButton from "../../components/bodys/AddButton";
 import CharacterButton from "../../components/bodys/CharacterButton";
+import ModelButton from "../../components/bodys/ModeloButton";
 
 function Tabs() {
   const [toggle, setToggle] = useState(1);
-  const [personagens, setPersonagens] = useState<any[]>([]); 
+  const [personagens, setPersonagens] = useState<any[]>([]);
+  const [modelList, setModelList] = useState<any[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     buscarPersonagens();
+    buscarModelos();
   }, []);
 
   const buscarPersonagens = async () => {
@@ -27,12 +30,22 @@ function Tabs() {
     }
   };
 
+  const buscarModelos = async () => {
+    try {
+      const user = getCurrentUser();
+      const models = await getSheetModels(user.uid);
+      setModelList(models);
+    } catch (error) {
+      alert("Erro ao buscar modelos: " + (error as Error).message);
+    }
+  }
+
   function updateToggle(id: number) {
     setToggle(id);
   }
 
   return (
-    <div className="d-flex justify-center">
+    <div className="flex justify-center">
       <div className="col-6 tab p-5">
         {/* Títulos das tabs */}
         <ul className="tab-list">
@@ -64,10 +77,20 @@ function Tabs() {
           ))}
         </div>
 
-        {/* Outras tabs */}
+        {/* Conteúdo da tab Modelos*/}
         <div className={toggle === 2 ? "show-content" : "content"}>
           <AddButton onClick={() => navigate("/criar-modelo")} />
+            {modelList.map(model => (
+            <ModelButton
+              key={model.id}
+              modelId={model.id}
+              onEdit={() => alert(`Editar Modelo "${model.data.nome}"`)}
+              onDelete={() => alert(`Deletar modelo "${model.data.nome}"`)}
+            />
+          ))}
         </div>
+
+        {/* Outras Tabs*/}
         <div className={toggle === 3 ? "show-content" : "content"}>
           <h2>Seus Sistemas</h2>
           <p>ENIGMA DO MEDO</p>
