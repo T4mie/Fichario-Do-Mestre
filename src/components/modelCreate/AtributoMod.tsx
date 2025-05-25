@@ -1,14 +1,16 @@
-// src/components/AtributoMod.tsx
+// src/components/sheet/AtributoMod.tsx
 import { useEffect, useState } from "react";
 import { calcularModificador } from "../../backend/caluladora";
 
 interface AtributoModProps {
   formulaMod: string;
   onChange?: (nome: string, valor: number) => void;
+  initialNome?: string;
 }
 
-export default function AtributoMod({ formulaMod, onChange }: AtributoModProps) {
-  const [nome, setNome] = useState("");
+
+export default function AtributoMod({ formulaMod, onChange, initialNome }: AtributoModProps) {
+  const [nome, setNome] = useState(initialNome || "");
   const [valor, setValor] = useState<number>(0);
   const [modificador, setModificador] = useState<number>(0);
 

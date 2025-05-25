@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { EllipsisVertical } from "lucide-react";
 import { getCurrentUser } from "../../backend/auth";
-import { getSheetModels } from "../../backend/firestore"; // ajuste o caminho se necessário
+import { getAllSheetModels } from "../../backend/firestore"; // ajuste o caminho se necessário
 
 interface ModelButtonProps {
   modelId: string;
@@ -21,7 +21,7 @@ export default function ModelButton({
     const fetchModelName = async () => {
       try {
         const user = getCurrentUser();
-        const models = await getSheetModels(user.uid);
+        const models = await getAllSheetModels(user.uid);
         const model = models.find((m) => m.id === modelId);
 
         if (model) {

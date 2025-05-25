@@ -8,33 +8,27 @@ export async function createCharacter(uid: string) {
   return docRef.id;
 }
 
-// Define uma função assíncrona para salvar dados de personagem
 export async function saveCharacterData(
-  uid: string,                      // ID do usuário (quem criou o personagem)
-  characterId: string,              // ID do personagem
-  data: Record<string, any>,       // Objeto com os dados a serem salvos (ex: { forca: 10, destreza: 12, ... })
-  field: string  // Nome do campo (mapa) que está sendo salvo
+  uid: string,
+  characterId: string,
+  modelId: string,
+  systemId: string,
+  characterName: string,
+  values: Record<string, string | number> // { compId: valor }
 ) {
   try {
-    // Cria uma referência ao documento do personagem no Firestore
-    // Caminho: users/{uid}/characters/{characterId}
     const docRef = doc(database, `users/${uid}/characters/${characterId}`);
-    
-    // Cria um objeto com a chave dinâmica [field] (atributos, pericias ou personalidade)
-    // Exemplo:
-    // Se field = "atributos" e data = { forca: 10, destreza: 12 }
-    // então updateData será: { atributos: { forca: 10, destreza: 12 } }
-    const updateData = {
-      [field]: data
+
+    const characterData = {
+      nome: characterName,
+      modelo: modelId,
+      sistema: systemId,
+      valores: values,
     };
 
-    // Atualiza o documento no Firestore com os dados informados
-    // Atenção: substitui o conteúdo atual do campo (ex: todo o mapa "atributos")
-    await updateDoc(docRef, updateData);
-
+    await setDoc(docRef, characterData);
   } catch (error) {
-    // Se ocorrer algum erro, lança uma exceção com a mensagem
-    throw new Error("Erro ao salvar dados do personagem: " + (error as Error).message);
+    throw new Error("Erro ao salvar personagem: " + (error as Error).message);
   }
 }
 
@@ -47,7 +41,7 @@ export async function getCharacters(uid: string) {
       const data = doc.data();
       return {
         id: doc.id,
-        nome: data.personalidade?.nome || "Sem nome",
+        nome: data.nome || "Sem nome",
         imageUrl: data.imageUrl || null,
       };
     });
@@ -58,22 +52,21 @@ export async function getCharacters(uid: string) {
   }
 }
 
-// Pega um personagem específico pelo ID
 export async function getCharacterById(uid: string, charId: string) {
   const charDocRef = doc(database, `users/${uid}/characters/${charId}`);
   const charDoc = await getDoc(charDocRef);
 
   if (!charDoc.exists()) return null;
 
-  // Pega todos os dados de uma vez (incluindo imageUrl, atributos, pericias, personalidade)
   const data = charDoc.data();
 
   return {
     id: charId,
+    nome: data.nome || "Sem nome",
+    modelo: data.modelo,            // <- ID do modelo
+    sistema: data.sistema,          // <- ID do sistema
+    valores: data.valores || {},    // <- dados preenchidos
     imageUrl: data.imageUrl || null,
-    atributos: data.atributos || {},
-    pericias: data.pericias || {},
-    personalidade: data.personalidade || {},
   };
 }
 
@@ -104,6 +97,18 @@ export async function getSystems(){
   }
 }
 
+export async function getSystemById(systemId: string) {
+  try {
+    const ref = doc(database, "systems", systemId);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) throw new Error("Sistema não encontrado.");
+    return snap.data();
+  } catch (error) {
+    throw new Error("Erro ao buscar sistema: " + (error as Error).message);
+  }
+}
+
+
 export async function createSheetModel(uid: string) {
   const characterCollectionRef = collection(database, "users", uid, "models");
   const docRef = await addDoc(characterCollectionRef, { nome: "" }); // apenas cria
@@ -117,6 +122,7 @@ export async function saveSheetModel(
   modelName: string,
   components: {
     id: string;
+    type: string;
     nome: string;
     x: number;
     y: number;
@@ -142,7 +148,7 @@ export async function saveSheetModel(
   }
 }
 
-export async function getSheetModels(uid: string) {
+export async function getAllSheetModels(uid: string) {
   try {
     const modelsRef = collection(database, "users", uid, "models");
     const querySnapshot = await getDocs(modelsRef);
@@ -156,4 +162,16 @@ export async function getSheetModels(uid: string) {
   } catch (error) {
     throw new Error('Error fetching models: ' + (error as Error).message);
   }
+}
+
+export async function getSheetModel(uid: string, modelId: string) {
+  try {
+    const modelRef = doc(database, "users", uid, "models", modelId);
+  const snapshot = await getDoc(modelRef);
+  if (!snapshot.exists()) throw new Error("Modelo não encontrado.");
+  return snapshot.data(); // Deve conter: nome, sistema, componente[]
+  } catch (error) {
+    throw new Error('Error fetching model: ' + (error as Error).message);
+  }
+  
 }

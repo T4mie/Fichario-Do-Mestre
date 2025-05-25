@@ -2,12 +2,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../backend/auth";
-import { getCharacters, getSheetModels } from "../../backend/firestore";
+import { getCharacters, getAllSheetModels } from "../../backend/firestore";
 import "./Tabs.css";
 
-import AddButton from "../../components/bodys/AddButton";
-import CharacterButton from "../../components/bodys/CharacterButton";
-import ModelButton from "../../components/bodys/ModeloButton";
+import AddButton from "../../components/buttons/AddButton";
+import CharacterButton from "../../components/buttons/CharacterButton";
+import ModelButton from "../../components/buttons/ModeloButton";
 
 function Tabs() {
   const [toggle, setToggle] = useState(1);
@@ -33,7 +33,7 @@ function Tabs() {
   const buscarModelos = async () => {
     try {
       const user = getCurrentUser();
-      const models = await getSheetModels(user.uid);
+      const models = await getAllSheetModels(user.uid);
       setModelList(models);
     } catch (error) {
       alert("Erro ao buscar modelos: " + (error as Error).message);
@@ -65,13 +65,13 @@ function Tabs() {
 
         {/* Conteúdo da tab Personagens */}
         <div className={toggle === 1 ? "show-content " : "content"}>
-          <AddButton onClick={() => navigate("/criar-personagem")} />
+          <AddButton onClick={() => navigate("/personagem")} />
           {personagens.map((personagem) => (
           <CharacterButton
             key={personagem.id}
             characterId={personagem.id}
             nome={personagem.nome || "Sem Nome"}
-            onEdit={() => navigate(`/personagens/${personagem.id}`)}
+            onEdit={() => navigate(`/personagem/${personagem.id}`)}
             onDelete={() => alert(`Deletar personagem "${personagem.nome}"`)}
           />
           ))}
@@ -84,7 +84,7 @@ function Tabs() {
             <ModelButton
               key={model.id}
               modelId={model.id}
-              onEdit={() => alert(`Editar Modelo "${model.data.nome}"`)}
+              onEdit={() => navigate(`/criar-modelo/${model.id}`)}
               onDelete={() => alert(`Deletar modelo "${model.data.nome}"`)}
             />
           ))}
