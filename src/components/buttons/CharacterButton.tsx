@@ -42,7 +42,7 @@ export default function CharacterButton({
 
   return (
     <div
-      className="relative w-70 h-35 aspect-[4/3] bg-gray-900 rounded-xl shadow-md flex mb-4 group"
+      className="relative w-59 h-30 aspect-[4/3] bg-gray-900 rounded-xl shadow-md flex mb-4 group mr-2 ml-2"
       onMouseEnter={() => setMenuOpen(true)}
       onMouseLeave={() => setMenuOpen(false)}
     >

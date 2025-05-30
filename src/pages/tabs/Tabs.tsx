@@ -65,29 +65,33 @@ function Tabs() {
 
         {/* Conteúdo da tab Personagens */}
         <div className={toggle === 1 ? "show-content " : "content"}>
-          <AddButton onClick={() => navigate("/personagem")} />
-          {personagens.map((personagem) => (
-          <CharacterButton
-            key={personagem.id}
-            characterId={personagem.id}
-            nome={personagem.nome || "Sem Nome"}
-            onEdit={() => navigate(`/personagem/${personagem.id}`)}
-            onDelete={() => alert(`Deletar personagem "${personagem.nome}"`)}
-          />
-          ))}
+          <div className="flex flex-row flex-wrap">
+            <AddButton onClick={() => navigate("/personagem")} />
+            {personagens.map((personagem) => (
+            <CharacterButton
+              key={personagem.id}
+              characterId={personagem.id}
+              nome={personagem.nome || "Sem Nome"}
+              onEdit={() => navigate(`/personagem/${personagem.id}`)}
+              onDelete={() => alert(`Deletar personagem "${personagem.nome}"`)}
+            />
+            ))}
+          </div>
         </div>
 
         {/* Conteúdo da tab Modelos*/}
         <div className={toggle === 2 ? "show-content" : "content"}>
-          <AddButton onClick={() => navigate("/criar-modelo")} />
-            {modelList.map(model => (
-            <ModelButton
-              key={model.id}
-              modelId={model.id}
-              onEdit={() => navigate(`/criar-modelo/${model.id}`)}
-              onDelete={() => alert(`Deletar modelo "${model.data.nome}"`)}
-            />
-          ))}
+          <div className="flex flex-row flex-wrap">
+            <AddButton onClick={() => navigate("/criar-modelo")} />
+              {modelList.map(model => (
+              <ModelButton
+                key={model.id}
+                modelId={model.id}
+                onEdit={() => navigate(`/criar-modelo/${model.id}`)}
+                onDelete={() => alert(`Deletar modelo "${model.data.nome}"`)}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Outras Tabs*/}

@@ -20,26 +20,26 @@ export default function AtributoMod({ formulaMod, onChange, initialNome }: Atrib
   }, [valor, nome, formulaMod]);
 
   return (
-    <div className="drag-handle border rounded space-y-2 bg-gray-800 shadow">
+    <div className=" drag-handle border rounded bg-gray-800 shadow w-[100%] h-[100%]">
       
       <input
         type="text"
         placeholder="Nome do Atributo"
         value={nome}
         onChange={(e) => setNome(e.target.value)}
-        className="w-full border-b p-1 font-semibold"
+        className="w-full border-b p-1 font-semibold drag-cancel text-sm text-center truncate"
       />
 
-      <div className="flex items-end gap-2">
+      <div className="flex flex-col items-center text-center gap-1 drag-handle justify-center ">
         <input
             type="number"
             value={valor}
             onChange={(e) => setValor(parseInt(e.target.value))}
-            className="max-w-[100px] text-2xl text-center border p-2 rounded"
+            className="w-12 h-12 text-2xl text-center border rounded mt-1 drag-cancel [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             placeholder="Valor"
         />
-        <div className="text-sm bg-gray-800 text-white px-2 py-1 rounded border text-center">
-            Mod: {modificador >= 0 ? "+" : ""}
+        <div className="text-sm bg-gray-800 text-white px-1 mb-1 rounded border text-center drag-cancel">
+            {modificador >= 0 ? "+" : ""}
             {modificador}
         </div>
         </div>

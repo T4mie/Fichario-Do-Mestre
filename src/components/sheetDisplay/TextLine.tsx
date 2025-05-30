@@ -19,13 +19,13 @@ export default function TextoDisplay({
   }, [texto]);
 
   return (
-    <div className="drag-handle flex items-center gap-2 border rounded bg-gray-800 shadow p-2 text-white">
-      <div className="w-[150px] font-semibold">{nome}</div>
+    <div className=" h-[100%] flex items-center border rounded bg-gray-800 shadow  text-white">
+      <div className="flex-1/4 font-semibold text-center">{nome}</div>
       <input
         type="text"
         value={texto}
         onChange={(e) => setTexto(e.target.value)}
-        className="flex-grow p-2 rounded bg-gray-700 border text-white"
+        className="flex-grow flex-3/4 rounded bg-gray-700 border text-white"
         placeholder="Digite o texto..."
       />
     </div>

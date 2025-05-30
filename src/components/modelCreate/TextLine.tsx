@@ -16,22 +16,22 @@ export default function TextoMod({ onChange, initialNome }: TextoModProps) {
   }, [nome, texto]);
 
   return (
-    <div className="drag-handle flex items-center gap-2 border rounded bg-gray-800 shadow">
-      <input
-        type="text"
-        placeholder="Nome do campo"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-        className="w-[150px] p-1 font-semibold bg-gray-700 text-white border-b rounded"
-      />
+      <div className=" flex items-center gap-2 border rounded bg-gray-800 shadow drag-cancel">
+        <input
+          type="text"
+          placeholder="Nome do campo"
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          className="w-[150px] p-1 font-semibold bg-gray-700 text-white border-b rounded"
+        />
 
-      <input
-        type="text"
-        placeholder="Digite o texto aqui..."
-        value={texto}
-        onChange={(e) => setTexto(e.target.value)}
-        className="w-[400px] p-1 font-semibold bg-gray-700 text-white rounded"
-      />
-    </div>
+        <input
+          type="text"
+          placeholder="Digite o texto aqui..."
+          value={texto}
+          onChange={(e) => setTexto(e.target.value)}
+          className="w-[400px] p-1 font-semibold bg-gray-700 text-white rounded"
+        />
+      </div>
   );
 }
