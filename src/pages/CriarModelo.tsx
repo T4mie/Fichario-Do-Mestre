@@ -7,6 +7,7 @@ import "react-resizable/css/styles.css";
 
 import AtributoMod from "../components/modelCreate/AtributoMod";
 import TextoMod from "../components/modelCreate/TextLine";
+import TextAreaMod from "../components/modelCreate/TextArea";
 
 import { useCriarModelo } from "../hooks/useCriarModelo";
 
@@ -25,7 +26,8 @@ export default function CriarModelo() {
     handleSave,
     adicionarAtributo, 
     adicionarTexto,
-    removerAtributo,
+    adicionarTextArea,
+    removerComponente,
     setModelName,
     setComponenteNomes,
     setComponentes,
@@ -66,6 +68,9 @@ export default function CriarModelo() {
         </button>
         <button onClick={adicionarTexto}>
           + Texto
+        </button>
+        <button onClick={adicionarTextArea}>
+          + Caixa de Texto
         </button>
         <button
           onClick={handleSave}
@@ -111,7 +116,8 @@ export default function CriarModelo() {
               }}
             >
               {componentes.map((comp) => (
-                <div key={comp.i} data-grid={comp} className="relative bg-gray-800 rounded p-2 group">
+                <div key={comp.i} data-grid={comp} className="relative bg-gray-800 rounded group">
+                  {/* Radio para identificador só para texto */}
                   {comp.type === "texto" && (
                     <input
                       type="radio"
@@ -122,6 +128,8 @@ export default function CriarModelo() {
                       title="Definir como identificador"
                     />
                   )}
+
+                  {/* Botão de remover para todos os tipos */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -132,15 +140,21 @@ export default function CriarModelo() {
                         // Não permite remover o único TextLine
                         return;
                       }
-                      removerAtributo(comp.i);
+                      removerComponente(comp.i);
                     }}
                     className={`absolute top-1 right-1 text-red-400 hover:text-red-600 z-10 transition-opacity duration-200
-                        ${comp.type === "texto" && componentes.filter((c) => c.type === "texto").length === 1 ? "opacity-30 cursor-not-allowed" : "opacity-0 group-hover:opacity-100"}`}
-                      disabled={comp.type === "texto" && componentes.filter((c) => c.type === "texto").length === 1}>
-                      <X size={18} />
+                      ${
+                        comp.type === "texto" && componentes.filter((c) => c.type === "texto").length === 1
+                          ? "opacity-30 cursor-not-allowed"
+                          : "opacity-0 group-hover:opacity-100"
+                      }`}
+                    disabled={comp.type === "texto" && componentes.filter((c) => c.type === "texto").length === 1}
+                  >
+                    <X size={18} />
                   </button>
 
-                  {comp.type === "atributo" ? (
+                  {/* Renderização do componente correto */}
+                  {comp.type === "atributo" && (
                     <AtributoMod
                       formulaMod={selectedSystemData?.formulaModificador}
                       initialNome={componenteNomes[comp.i] || ""}
@@ -151,8 +165,20 @@ export default function CriarModelo() {
                         }));
                       }}
                     />
-                  ) : (
+                  )}
+                  {comp.type === "texto" && (
                     <TextoMod
+                      initialNome={componenteNomes[comp.i] || ""}
+                      onChange={(nome) => {
+                        setComponenteNomes((prev) => ({
+                          ...prev,
+                          [comp.i]: nome,
+                        }));
+                      }}
+                    />
+                  )}
+                  {comp.type === "textarea" && (
+                    <TextAreaMod
                       initialNome={componenteNomes[comp.i] || ""}
                       onChange={(nome) => {
                         setComponenteNomes((prev) => ({

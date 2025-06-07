@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import GridLayout from "react-grid-layout";
 import AtributoDisplay from "../components/sheetDisplay/AtributoMod";
 import TextoDisplay from "../components/sheetDisplay/TextLine";
+import TextAreaDisplay from "../components/sheetDisplay/TextArea";
 import { getAllSheetModels, getSheetModel, getSystemById, saveCharacterData, getCharacterById, createCharacter } from "../backend/firestore";
 import { getCurrentUser } from "../backend/auth";
 
@@ -108,8 +109,7 @@ export default function CriarPersonagem() {
         <select
           value={selectedModelId}
           onChange={(e) => setSelectedModelId(e.target.value)}
-          className="border p-2 rounded text-black"
-        >
+          className="border p-2 rounded text-black">
           <option value="">Selecione um modelo de ficha</option>
           {models.map((m) => (
             <option key={m.id} value={m.id}>
@@ -156,7 +156,7 @@ export default function CriarPersonagem() {
         >
 
           {modelData.componente.map((comp: any) => (
-            <div key={comp.id} className="bg-gray-800 p-2 rounded">
+            <div key={comp.id} className="bg-gray-800 rounded">
 
               {comp.type === "atributo" && (
                 <AtributoDisplay
@@ -171,6 +171,16 @@ export default function CriarPersonagem() {
 
               {comp.type === "texto" && (
                 <TextoDisplay
+                  nome={comp.nome}
+                  textoInicial={valores[comp.id] as string}
+                  onChange={(texto) =>
+                    setValores((prev) => ({ ...prev, [comp.id]: texto }))
+                  }
+                />
+              )}
+
+              {comp.type === "textarea" && (
+                <TextAreaDisplay
                   nome={comp.nome}
                   textoInicial={valores[comp.id] as string}
                   onChange={(texto) =>

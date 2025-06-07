@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createSheetModel, getSheetModel, getSystems, saveSheetModel } from "../backend/firestore";
 import { getCurrentUser } from "../backend/auth";
 
-type TipoComponente = "atributo" | "texto";
+type TipoComponente = "atributo" | "texto" | "textarea";
 
 export function useCriarModelo() {
   const [systems, setSystems] = useState<{ id: string; data: any }[]>([]);
@@ -171,7 +171,23 @@ export function useCriarModelo() {
     ]);
   };
 
-  const removerAtributo = (i: string) => {
+  const adicionarTextArea = () => {
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    const { x, y } = encontrarPosicaoLivre(4, 4);
+    setComponentes((prev) => [
+      ...prev,
+      {
+        i: crypto.randomUUID(),
+        type: "textarea",
+        x,
+        y,
+        w: 4,
+        h: 4,
+      },
+    ]);
+  };
+
+  const removerComponente = (i: string) => {
     setComponentes((prev) => prev.filter((a) => a.i !== i));
   };
 
@@ -188,7 +204,8 @@ export function useCriarModelo() {
     handleSave,
     adicionarAtributo,
     adicionarTexto,
-    removerAtributo,
+    adicionarTextArea,
+    removerComponente,
     setModelName,
     setComponenteNomes,
     setComponentes,

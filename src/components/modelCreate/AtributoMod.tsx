@@ -8,7 +8,6 @@ interface AtributoModProps {
   initialNome?: string;
 }
 
-
 export default function AtributoMod({ formulaMod, onChange, initialNome }: AtributoModProps) {
   const [nome, setNome] = useState(initialNome || "");
   const [valor, setValor] = useState<number>(0);
@@ -42,8 +41,7 @@ export default function AtributoMod({ formulaMod, onChange, initialNome }: Atrib
             {modificador >= 0 ? "+" : ""}
             {modificador}
         </div>
-        </div>
-
+      </div>
     </div>
   );
 }

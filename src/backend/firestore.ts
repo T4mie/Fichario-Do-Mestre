@@ -68,6 +68,15 @@ export async function getCharacterById(uid: string, charId: string) {
   };
 }
 
+export async function deleteCharacter(uid: string, charId: string) {
+  try {
+    const charRef = doc(database, "users", uid, "characters", charId);
+    await deleteDoc(charRef);
+  } catch (error) {
+    throw new Error("Erro ao deletar personagem: " + (error as Error).message);
+  }
+}
+
 
 export async function getSystems(){
   try {
@@ -172,14 +181,5 @@ export async function deleteSheetModel(uid: string, modelId: string) {
     await deleteDoc(modelRef);
   } catch (error) {
     throw new Error("Erro ao deletar modelo: " + (error as Error).message);
-  }
-}
-
-export async function deleteCharacter(uid: string, charId: string) {
-  try {
-    const charRef = doc(database, "users", uid, "characters", charId);
-    await deleteDoc(charRef);
-  } catch (error) {
-    throw new Error("Erro ao deletar personagem: " + (error as Error).message);
   }
 }
