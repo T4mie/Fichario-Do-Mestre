@@ -15,6 +15,7 @@ export function useCriarModelo() {
   >([]);
   const [componenteNomes, setComponenteNomes] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [identificadorId, setIdentificadorId] = useState<string>("");
 
   const user = getCurrentUser();
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ export function useCriarModelo() {
           setModelName(modelData.nome || "");
           setSelectedSystemId(modelData.sistema || "");
           setSelectedSystemData(systemsList.find(s => s.id === modelData.sistema)?.data || null);
+          setIdentificadorId(modelData.identificadorId || "");
 
           const comps = modelData.componente || [];
           setComponentes(comps.map((comp: any) => ({
@@ -63,6 +65,24 @@ export function useCriarModelo() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+  if (!modelId) {
+    const id = crypto.randomUUID();
+    setComponentes([
+      {
+        i: id,
+        type: "texto",
+        x: 0,
+        y: 0,
+        w: 4,
+        h: 1,
+      },
+    ]);
+    setComponenteNomes({ [id]: "" });
+    setIdentificadorId(id);
+  }
+}, [modelId]);
+
   const handleSystemChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const id = event.target.value;
     setSelectedSystemId(id);
@@ -86,7 +106,7 @@ export function useCriarModelo() {
         h: c.h,
       }));
 
-      await saveSheetModel(user.uid, finalModelId, selectedSystemId, modelName, componentesParaSalvar);
+      await saveSheetModel(user.uid, finalModelId, selectedSystemId, modelName, componentesParaSalvar, identificadorId);
 
       alert("Modelo salvo com sucesso!");
       setModelName("");
@@ -163,6 +183,7 @@ export function useCriarModelo() {
     componentes,
     componenteNomes,
     loading,
+    identificadorId,
     handleSystemChange,
     handleSave,
     adicionarAtributo,
@@ -171,6 +192,7 @@ export function useCriarModelo() {
     setModelName,
     setComponenteNomes,
     setComponentes,
+    setIdentificadorId,
     GRID_COLS,
     GRID_HEIGHT,
     ROW_HEIGHT

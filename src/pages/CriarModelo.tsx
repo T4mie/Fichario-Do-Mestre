@@ -20,6 +20,7 @@ export default function CriarModelo() {
     componentes,
     componenteNomes,
     loading,
+    identificadorId,
     handleSystemChange,
     handleSave,
     adicionarAtributo, 
@@ -28,6 +29,7 @@ export default function CriarModelo() {
     setModelName,
     setComponenteNomes,
     setComponentes,
+    setIdentificadorId,
     GRID_COLS,
     GRID_HEIGHT,
     ROW_HEIGHT
@@ -109,19 +111,33 @@ export default function CriarModelo() {
               }}
             >
               {componentes.map((comp) => (
-                <div
-                  key={comp.i}
-                  data-grid={comp}
-                  className="relative bg-gray-800 rounded p-2 group"
-                >
+                <div key={comp.i} data-grid={comp} className="relative bg-gray-800 rounded p-2 group">
+                  {comp.type === "texto" && (
+                    <input
+                      type="radio"
+                      name="identificador"
+                      checked={identificadorId === comp.i}
+                      onChange={() => setIdentificadorId(comp.i)}
+                      className="absolute top-1 left-1"
+                      title="Definir como identificador"
+                    />
+                  )}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
+                      if (
+                        comp.type === "texto" &&
+                        componentes.filter((c) => c.type === "texto").length === 1
+                      ) {
+                        // Não permite remover o único TextLine
+                        return;
+                      }
                       removerAtributo(comp.i);
                     }}
-                    className="absolute top-1 right-1 text-red-400 hover:text-red-600 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                  >
-                    <X size={18} />
+                    className={`absolute top-1 right-1 text-red-400 hover:text-red-600 z-10 transition-opacity duration-200
+                        ${comp.type === "texto" && componentes.filter((c) => c.type === "texto").length === 1 ? "opacity-30 cursor-not-allowed" : "opacity-0 group-hover:opacity-100"}`}
+                      disabled={comp.type === "texto" && componentes.filter((c) => c.type === "texto").length === 1}>
+                      <X size={18} />
                   </button>
 
                   {comp.type === "atributo" ? (

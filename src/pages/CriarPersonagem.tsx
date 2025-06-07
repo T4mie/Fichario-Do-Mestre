@@ -70,7 +70,12 @@ export default function CriarPersonagem() {
   }, [selectedModelId]);
 
   const handleSalvar = async () => {
-  if (!user || !characterName || !modelData) return;
+  if (!user || !modelData) return;
+
+  // Pega o identificadorId do modelo
+  const identificadorId = modelData.identificadorId;
+  let nomeCampo = valores[identificadorId];
+  let characterName = (typeof nomeCampo === "string" ? nomeCampo : "")?.trim() || "Sem nome";
 
   const characterId = charId || await createCharacter(user.uid); // ← USAR o ID atual, se estiver editando
 
@@ -113,14 +118,6 @@ export default function CriarPersonagem() {
           ))}
         </select>
       )}
-
-      {/* Nome do personagem */}
-    <input
-      placeholder="Nome do Personagem"
-      className="p-2 border rounded w-1/2"
-      value={characterName}
-      onChange={(e) => setCharacterName(e.target.value)}
-    />
 
       {/* Botão Salvar, se houver modelData */}
       {modelData && (

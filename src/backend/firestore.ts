@@ -116,7 +116,8 @@ export async function saveSheetModel(
     y: number;
     w: number;
     h: number;
-  }[]
+  }[],
+  identificadorId: string
 ) {
   try {
     // Cria a referência ao documento do modelo
@@ -127,6 +128,7 @@ export async function saveSheetModel(
       nome: modelName,       // Nome do modelo (string)
       sistema: systemId,     // ID do sistema associado (string)
       componente: components, // Lista de atributos com id, nome e posição (array de objetos)
+      identificadorId, // salva o identificador
     };
 
     // Salva os dados no documento com o ID fornecido
