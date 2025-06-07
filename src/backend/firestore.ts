@@ -1,10 +1,10 @@
 // src/backend/firestore.ts
-import { addDoc, collection, doc, getDoc, getDocs, setDoc, updateDoc} from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, setDoc, deleteDoc} from "firebase/firestore";
 import { database } from "./firebase";
 
 export async function createCharacter(uid: string) {
   const characterCollectionRef = collection(database, "users", uid, "characters");
-  const docRef = await addDoc(characterCollectionRef, { imageUrl: "" }); // apenas cria
+  const docRef = await addDoc(characterCollectionRef, { }); // apenas cria
   return docRef.id;
 }
 
@@ -42,7 +42,6 @@ export async function getCharacters(uid: string) {
       return {
         id: doc.id,
         nome: data.nome || "Sem nome",
-        imageUrl: data.imageUrl || null,
       };
     });
 
@@ -66,20 +65,9 @@ export async function getCharacterById(uid: string, charId: string) {
     modelo: data.modelo,            // <- ID do modelo
     sistema: data.sistema,          // <- ID do sistema
     valores: data.valores || {},    // <- dados preenchidos
-    imageUrl: data.imageUrl || null,
   };
 }
 
-
-// Atualiza apenas a URL da imagem
-export async function updateCharacterImage(uid: string, characterId: string, imageUrl: string) {
-  try {
-    const characterDocRef = doc(database, "users", uid, "characters", characterId);
-    await updateDoc(characterDocRef, { imageUrl });
-  } catch (error) {
-    throw new Error("Error updating character image: " + (error as Error).message);
-  }
-}
 
 export async function getSystems(){
   try {
@@ -174,4 +162,22 @@ export async function getSheetModel(uid: string, modelId: string) {
     throw new Error('Error fetching model: ' + (error as Error).message);
   }
   
+}
+
+export async function deleteSheetModel(uid: string, modelId: string) {
+  try {
+    const modelRef = doc(database, "users", uid, "models", modelId);
+    await deleteDoc(modelRef);
+  } catch (error) {
+    throw new Error("Erro ao deletar modelo: " + (error as Error).message);
+  }
+}
+
+export async function deleteCharacter(uid: string, charId: string) {
+  try {
+    const charRef = doc(database, "users", uid, "characters", charId);
+    await deleteDoc(charRef);
+  } catch (error) {
+    throw new Error("Erro ao deletar personagem: " + (error as Error).message);
+  }
 }

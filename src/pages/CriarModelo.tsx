@@ -59,10 +59,10 @@ export default function CriarModelo() {
           className="border p-2 rounded text-black"
         />
 
-        <button onClick={adicionarAtributo} className="bg-green-600 px-3 py-1 rounded hover:bg-green-700">
+        <button onClick={adicionarAtributo} >
           + Atributo
         </button>
-        <button onClick={adicionarTexto} className="bg-yellow-600 px-3 py-1 rounded hover:bg-yellow-700">
+        <button onClick={adicionarTexto}>
           + Texto
         </button>
         <button
@@ -72,7 +72,7 @@ export default function CriarModelo() {
         >
           {loading ? "Salvando..." : "Salvar"}
         </button>
-        <button onClick={() => navigate("/user")} className="ml-auto bg-gray-700 px-3 py-1 rounded hover:bg-gray-600">
+        <button onClick={() => navigate("/user")} className="ml-auto px-3 py-1 rounded">
           Voltar
         </button>
       </div>

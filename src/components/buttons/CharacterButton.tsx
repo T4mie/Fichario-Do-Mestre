@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { EllipsisVertical } from "lucide-react";
 import { getCurrentUser } from "../../backend/auth";
-import { getImageUrl } from "../../backend/storage";
 
 interface CharacterButtonProps {
   characterId: string;
@@ -18,27 +17,7 @@ export default function CharacterButton({
   onDelete,
 }: CharacterButtonProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string>("");
   const [characterName, setCharacterName] = useState(nome);
-
-  useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const user = getCurrentUser();
-        
-        // Get character image
-        const imagePath = `users/${user.uid}/characters/${characterId}/imagem.png`;
-        const url = await getImageUrl(imagePath);
-        setImageUrl(url);
-        
-      } catch (error) {
-        console.error("Erro ao carregar imagem:", (error as Error).message);
-        setImageUrl("https://firebasestorage.googleapis.com/v0/b/fichario-do-mestre.firebasestorage.app/o/app%2Fplaceholder.png?alt=media&token=6c4819be-3da7-4781-9396-519e67ae782b");
-      }
-    };
-
-    fetchImage();
-  }, [characterId]);
 
   return (
     <div
@@ -46,12 +25,6 @@ export default function CharacterButton({
       onMouseEnter={() => setMenuOpen(true)}
       onMouseLeave={() => setMenuOpen(false)}
     >
-      {/* Imagem à esquerda */}
-      <img
-        src={imageUrl}
-        alt={characterName}
-        className="w-2/5 object-cover h-full rounded-l-xl"
-      />
 
       {/* Nome do personagem */}
       <div className="flex-1 p-3 flex flex-col justify-center overflow-hidden">

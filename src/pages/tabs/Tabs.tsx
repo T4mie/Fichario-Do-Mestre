@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../backend/auth";
-import { getCharacters, getAllSheetModels } from "../../backend/firestore";
+import { getCharacters, getAllSheetModels, deleteSheetModel, deleteCharacter } from "../../backend/firestore";
 import "./Tabs.css";
 
 import AddButton from "../../components/buttons/AddButton";
@@ -40,6 +40,30 @@ function Tabs() {
     }
   }
 
+  const handleDeleteModel = async (modelId: string) => {
+  if (window.confirm("Tem certeza que deseja deletar este modelo?")) {
+    try {
+      const user = getCurrentUser();
+      await deleteSheetModel(user.uid, modelId);
+      buscarModelos();
+    } catch (error) {
+      alert("Erro ao deletar modelo: " + (error as Error).message);
+    }
+  }
+};
+
+const handleDeleteCharacter = async (charId: string) => {
+  if (window.confirm("Tem certeza que deseja deletar este personagem?")) {
+    try {
+      const user = getCurrentUser();
+      await deleteCharacter(user.uid, charId);
+      buscarPersonagens();
+    } catch (error) {
+      alert("Erro ao deletar personagem: " + (error as Error).message);
+    }
+  }
+};
+
   function updateToggle(id: number) {
     setToggle(id);
   }
@@ -73,7 +97,7 @@ function Tabs() {
               characterId={personagem.id}
               nome={personagem.nome || "Sem Nome"}
               onEdit={() => navigate(`/personagem/${personagem.id}`)}
-              onDelete={() => alert(`Deletar personagem "${personagem.nome}"`)}
+              onDelete={() => handleDeleteCharacter(personagem.id)}
             />
             ))}
           </div>
@@ -88,7 +112,7 @@ function Tabs() {
                 key={model.id}
                 modelId={model.id}
                 onEdit={() => navigate(`/criar-modelo/${model.id}`)}
-                onDelete={() => alert(`Deletar modelo "${model.data.nome}"`)}
+                onDelete={() => handleDeleteModel(model.id)}
               />
             ))}
           </div>

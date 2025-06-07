@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import GridLayout from "react-grid-layout";
 import AtributoDisplay from "../components/sheetDisplay/AtributoMod";
 import TextoDisplay from "../components/sheetDisplay/TextLine";
@@ -11,6 +11,7 @@ import "react-resizable/css/styles.css";
 
 export default function CriarPersonagem() {
   const user = getCurrentUser();
+  const navigate = useNavigate();
 
   const [models, setModels] = useState<{ id: string; data: any }[]>([]);
   const [selectedModelId, setSelectedModelId] = useState("");
@@ -53,7 +54,6 @@ export default function CriarPersonagem() {
   fetchAll();
 }, [charId]);
 
-
   useEffect(() => {
     async function fetchModelData() {
       if (!user || !selectedModelId) return;
@@ -86,7 +86,6 @@ export default function CriarPersonagem() {
   alert("Personagem salvo!");
 };
 
-
   const layout = modelData?.componente?.map((comp: any) => ({
     i: comp.id,
     x: comp.x,
@@ -97,29 +96,51 @@ export default function CriarPersonagem() {
 
   return (
     <div className="p-4 space-y-4">
-      <h2 className="text-xl font-bold text-white">Criar Personagem</h2>
-
-      {/* Seleção de modelo */}
-      <select
-        value={selectedModelId}
-        onChange={(e) => setSelectedModelId(e.target.value)}
-        className="border p-2 rounded w-full"
-      >
-        <option value="">Selecione um modelo de ficha</option>
-        {models.map((m) => (
-          <option key={m.id} value={m.id}>
-            {m.data.nome || m.id}
-          </option>
-        ))}
-      </select>
+    {/* Header organizado */}
+    <div className="flex items-center gap-4 p-4 bg-gray-900 text-white rounded">
+      {/* Só mostra o select se NÃO estiver editando */}
+      {!charId && (
+        <select
+          value={selectedModelId}
+          onChange={(e) => setSelectedModelId(e.target.value)}
+          className="border p-2 rounded text-black"
+        >
+          <option value="">Selecione um modelo de ficha</option>
+          {models.map((m) => (
+            <option key={m.id} value={m.id}>
+              {m.data.nome || m.id}
+            </option>
+          ))}
+        </select>
+      )}
 
       {/* Nome do personagem */}
-      <input
-        placeholder="Nome do Personagem"
-        className="p-2 border rounded w-full"
-        value={characterName}
-        onChange={(e) => setCharacterName(e.target.value)}
-      />
+    <input
+      placeholder="Nome do Personagem"
+      className="p-2 border rounded w-1/2"
+      value={characterName}
+      onChange={(e) => setCharacterName(e.target.value)}
+    />
+
+      {/* Botão Salvar, se houver modelData */}
+      {modelData && (
+        <button
+          onClick={handleSalvar}
+          className=" ml-auto text-white px-1 py-2 rounded"
+        >
+          Salvar Personagem
+        </button>
+      )}
+
+      {/* Botão Voltar alinhado à direita */}
+      <button
+        onClick={() => navigate("/user")}
+        className="px-3 py-1 rounded"
+      >
+        Voltar
+      </button>
+
+    </div>
 
       {/* Renderização do layout com os componentes */}
       {modelData && (
@@ -165,16 +186,6 @@ export default function CriarPersonagem() {
         </GridLayout>
       </div>
     )}
-
-      {/* Botão de salvar */}
-      {modelData && (
-        <button
-          onClick={handleSalvar}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          Salvar Personagem
-        </button>
-      )}
     </div>
   );
 }
