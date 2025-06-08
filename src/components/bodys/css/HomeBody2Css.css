@@ -54,3 +54,23 @@
   top: -100%;
   left: 200%;
 }
+
+.card p{
+  padding: 0%;
+  text-align: center;
+}
+
+.card h4{
+  font-size: larger;
+  padding: 2px;
+  text-align: center;
+}
+
+.quote{
+  font-style: italic;
+}
+
+.titulos{
+  text-shadow: #05a8ff 1px 0 10px;
+  font-weight: bold;
+}

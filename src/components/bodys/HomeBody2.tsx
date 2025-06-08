@@ -13,7 +13,9 @@ function HomeBody2(){
                             <img src={Img} alt="" className='w-full h-full object-fill p-1' />
                         </div>
                         <div className='flex-1/4'>
-                            <p>João Vitor Furlan Dessani</p>
+                            <h4>João Vitor Furlan Dessani</h4>
+                            <p className='titulos'>Criatura de Muitas faces</p>
+                            <p className="quote">"Ninguém sabe com ta a mente do front-ender"</p>
                         </div>
                         <div className='flex-1/4'>
                             <p></p>
@@ -26,7 +28,9 @@ function HomeBody2(){
                             <img src={Img} alt="" className='w-full h-full object-fill p-1' />
                         </div>
                         <div className='flex-1/4'>
-                            <p>Artur Adam de Oliveira</p>
+                            <h4>Artur Adam de Oliveira</h4>
+                            <p className='titulos'>Anomalía ubíqua</p>
+                            <p className="quote">"I am not a brave man. But I am, in certain circumstances, a very stubborn one."</p>
                         </div>
                         <div className='flex-1/4'>
                             <p></p>
@@ -39,7 +43,9 @@ function HomeBody2(){
                             <img src={Img} alt="" className='w-full h-full object-fill p-1' />
                         </div>
                         <div className='flex-1/4'>
-                            <p>Isabela Moraes Vezzu</p>
+                            <h4>Isabela Moraes Vezzu</h4>
+                            <p className='titulos'>Eterno servo das escrituras</p>
+                            <p className="quote">"O caos é inevitável"</p>
                         </div>
                         <div className='flex-1/4'>
                             <p></p>
@@ -52,7 +58,9 @@ function HomeBody2(){
                             <img src={Img} alt="" className='w-full h-full object-fill p-1' />
                         </div>
                         <div className='flex-1/4'>
-                            <p>Isabela Tamie Miyazato</p>
+                            <h4>Isabela Tamie Miyazato</h4>
+                            <p className='titulos'>Titã das chamas</p>
+                            <p className="quote">"The universe leads, we can only follow"</p>
                         </div>
                         <div className='flex-1/4'>
                             <p></p>
