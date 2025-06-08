@@ -4,11 +4,13 @@ import GridLayout from "react-grid-layout";
 import AtributoDisplay from "../components/sheetDisplay/AtributoMod";
 import TextoDisplay from "../components/sheetDisplay/TextLine";
 import TextAreaDisplay from "../components/sheetDisplay/TextArea";
+import BonusDisplay from "../components/sheetDisplay/BonusMod";
 import { getAllSheetModels, getSheetModel, getSystemById, saveCharacterData, getCharacterById, createCharacter } from "../backend/firestore";
 import { getCurrentUser } from "../backend/auth";
 
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+
 
 export default function CriarPersonagem() {
   const user = getCurrentUser();
@@ -28,32 +30,33 @@ export default function CriarPersonagem() {
   const GRID_HEIGHT = NUM_ROWS * ROW_HEIGHT;
 
   useEffect(() => {
-  async function fetchAll() {
-    if (!user) return;
+    async function fetchAll() {
+      if (!user) return;
 
-    if (charId) {
-      // Modo edição
-      const personagem = await getCharacterById(user.uid, charId);
-      if (!personagem) return;
+      if (charId) {
+        // Modo edição
+        const personagem = await getCharacterById(user.uid, charId);
+        if (!personagem) return;
 
-      setCharacterName(personagem.nome);
-      setValores(personagem.valores || {});
-      setSelectedModelId(personagem.modelo);
+        setCharacterName(personagem.nome);
+        setValores(personagem.valores || {});
+        setSelectedModelId(personagem.modelo);
 
-      const model = await getSheetModel(user.uid, personagem.modelo);
-      setModelData(model);
+        const model = await getSheetModel(user.uid, personagem.modelo);
+        setModelData(model);
 
-      const sistema = await getSystemById(personagem.sistema);
-      setSystemData(sistema);
-    } else {
-      // Modo criação
-      const lista = await getAllSheetModels(user.uid);
-      setModels(lista);
+        const sistema = await getSystemById(personagem.sistema);
+        setSystemData(sistema);
+      } else {
+        // Modo criação
+        const lista = await getAllSheetModels(user.uid);
+        setModels(lista);
+      }
     }
-  }
 
-  fetchAll();
-}, [charId]);
+    console.log("Sistema:", systemData);
+    fetchAll();
+  }, [charId]);
 
   useEffect(() => {
     async function fetchModelData() {
@@ -175,6 +178,16 @@ export default function CriarPersonagem() {
                   textoInicial={valores[comp.id] as string}
                   onChange={(texto) =>
                     setValores((prev) => ({ ...prev, [comp.id]: texto }))
+                  }
+                />
+              )}
+
+              {comp.type === "bonus" && (
+                <BonusDisplay
+                  nome={comp.nome}
+                  valorInicial={valores[comp.id] as number}
+                  onChange={valor =>
+                    setValores(prev => ({ ...prev, [comp.id]: valor }))
                   }
                 />
               )}

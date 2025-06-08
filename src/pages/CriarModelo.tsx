@@ -8,6 +8,7 @@ import "react-resizable/css/styles.css";
 import AtributoMod from "../components/modelCreate/AtributoMod";
 import TextoMod from "../components/modelCreate/TextLine";
 import TextAreaMod from "../components/modelCreate/TextArea";
+import BonusMod from "../components/modelCreate/BonusMod";
 
 import { useCriarModelo } from "../hooks/useCriarModelo";
 
@@ -27,6 +28,7 @@ export default function CriarModelo() {
     adicionarAtributo, 
     adicionarTexto,
     adicionarTextArea,
+    adicionarBonus,
     removerComponente,
     setModelName,
     setComponenteNomes,
@@ -71,6 +73,9 @@ export default function CriarModelo() {
         </button>
         <button onClick={adicionarTextArea}>
           + Caixa de Texto
+        </button>
+        <button onClick={adicionarBonus}>
+          + Bônus
         </button>
         <button
           onClick={handleSave}
@@ -157,6 +162,17 @@ export default function CriarModelo() {
                   {comp.type === "atributo" && (
                     <AtributoMod
                       formulaMod={selectedSystemData?.formulaModificador}
+                      initialNome={componenteNomes[comp.i] || ""}
+                      onChange={(nome) => {
+                        setComponenteNomes((prev) => ({
+                          ...prev,
+                          [comp.i]: nome,
+                        }));
+                      }}
+                    />
+                  )}
+                  {comp.type === "bonus" && (
+                    <BonusMod
                       initialNome={componenteNomes[comp.i] || ""}
                       onChange={(nome) => {
                         setComponenteNomes((prev) => ({

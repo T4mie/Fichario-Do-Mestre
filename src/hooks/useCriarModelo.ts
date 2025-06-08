@@ -1,9 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { createSheetModel, getSheetModel, getSystems, saveSheetModel } from "../backend/firestore";
+import {
+  createSheetModel,
+  getSheetModel,
+  getSystems,
+  saveSheetModel,
+} from "../backend/firestore";
 import { getCurrentUser } from "../backend/auth";
+import { debounce } from "lodash";
 
-type TipoComponente = "atributo" | "texto" | "textarea";
+type TipoComponente = "atributo" | "texto" | "textarea" | "bonus";
 
 export function useCriarModelo() {
   const [systems, setSystems] = useState<{ id: string; data: any }[]>([]);
@@ -16,6 +22,7 @@ export function useCriarModelo() {
   const [componenteNomes, setComponenteNomes] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [identificadorId, setIdentificadorId] = useState<string>("");
+  const [modeloId, setModeloId] = useState<string | null>(null);
 
   const user = getCurrentUser();
   const navigate = useNavigate();
@@ -26,6 +33,7 @@ export function useCriarModelo() {
   const ROW_HEIGHT = 55;
   const GRID_HEIGHT = NUM_ROWS * ROW_HEIGHT;
 
+  // Carregar sistemas e modelo (se houver)
   useEffect(() => {
     async function fetchData() {
       try {
@@ -34,20 +42,25 @@ export function useCriarModelo() {
 
         if (modelId && user) {
           const modelData = await getSheetModel(user.uid, modelId);
+          if (!modelData) return;
+
+          setModeloId(modelId);
           setModelName(modelData.nome || "");
           setSelectedSystemId(modelData.sistema || "");
           setSelectedSystemData(systemsList.find(s => s.id === modelData.sistema)?.data || null);
           setIdentificadorId(modelData.identificadorId || "");
 
           const comps = modelData.componente || [];
-          setComponentes(comps.map((comp: any) => ({
-            i: comp.id,
-            type: comp.type,
-            x: comp.x,
-            y: comp.y,
-            w: comp.w,
-            h: comp.h,
-          })));
+          setComponentes(
+            comps.map((comp: any) => ({
+              i: comp.id,
+              type: comp.type,
+              x: comp.x,
+              y: comp.y,
+              w: comp.w,
+              h: comp.h,
+            }))
+          );
 
           setComponenteNomes(() => {
             const nomes: Record<string, string> = {};
@@ -56,6 +69,22 @@ export function useCriarModelo() {
             });
             return nomes;
           });
+        } else if (!modelId && user) {
+          // Novo modelo: inicializa com um componente texto
+          const id = crypto.randomUUID();
+          setModeloId(null);
+          setComponentes([
+            {
+              i: id,
+              type: "texto",
+              x: 0,
+              y: 0,
+              w: 4,
+              h: 1,
+            },
+          ]);
+          setComponenteNomes({ [id]: "" });
+          setIdentificadorId(id);
         }
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
@@ -63,75 +92,95 @@ export function useCriarModelo() {
     }
 
     fetchData();
-  }, []);
+  }, [modelId, user]);
 
+  // Atualiza selectedSystemData ao mudar selectedSystemId
   useEffect(() => {
-  if (!modelId) {
-    const id = crypto.randomUUID();
-    setComponentes([
-      {
-        i: id,
-        type: "texto",
-        x: 0,
-        y: 0,
-        w: 4,
-        h: 1,
-      },
-    ]);
-    setComponenteNomes({ [id]: "" });
-    setIdentificadorId(id);
-  }
-}, [modelId]);
-
-  const handleSystemChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const id = event.target.value;
-    setSelectedSystemId(id);
-    const system = systems.find((s) => s.id === id);
+    const system = systems.find((s) => s.id === selectedSystemId);
     setSelectedSystemData(system?.data || null);
-  };
+  }, [selectedSystemId, systems]);
 
-  const handleSave = async () => {
+  // Função que faz o save real (manual ou auto)
+  const salvarModelo = async () => {
     if (!user || !selectedSystemId || !modelName) return;
+
     setLoading(true);
+
     try {
-      const finalModelId = modelId || await createSheetModel(user.uid);
-
-      const componentesParaSalvar = componentes.map((c) => ({
-        id: c.i,
-        nome: componenteNomes[c.i] || "Sem nome",
-        type: c.type,
-        x: c.x,
-        y: c.y,
-        w: c.w,
-        h: c.h,
-      }));
-
-      await saveSheetModel(user.uid, finalModelId, selectedSystemId, modelName, componentesParaSalvar, identificadorId);
-
-      alert("Modelo salvo com sucesso!");
-      setModelName("");
-      setComponentes([]);
-      setComponenteNomes({});
-      navigate("/user");
+      if (!modeloId) {
+        // Cria um novo documento
+        const newId = await createSheetModel(user.uid);
+        setModeloId(newId);
+        await saveSheetModel(
+          user.uid,
+          newId,
+          selectedSystemId,
+          modelName,
+          componentes.map((c) => ({
+            id: c.i,
+            nome: componenteNomes[c.i] || "Sem nome",
+            type: c.type,
+            x: c.x,
+            y: c.y,
+            w: c.w,
+            h: c.h,
+          })),
+          identificadorId
+        );
+      } else {
+        // Atualiza o documento existente
+        await saveSheetModel(
+          user.uid,
+          modeloId,
+          selectedSystemId,
+          modelName,
+          componentes.map((c) => ({
+            id: c.i,
+            nome: componenteNomes[c.i] || "Sem nome",
+            type: c.type,
+            x: c.x,
+            y: c.y,
+            w: c.w,
+            h: c.h,
+          })),
+          identificadorId
+        );
+      }
     } catch (error) {
-      alert("Erro ao salvar modelo.");
+      console.error("Erro ao salvar modelo:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  // debounce para auto-save com delay de 1 segundo
+  const debouncedAutoSave = useCallback(
+    debounce(() => {
+      if (componentes.length === 0) return; // não salva se não tiver componentes
+
+      salvarModelo();
+    }, 1000),
+    [componentes, componenteNomes, modelName, selectedSystemId, identificadorId, modeloId]
+  );
+
+  // Auto-save ao mudar dados do modelo
+  useEffect(() => {
+    debouncedAutoSave();
+
+    // Cancelar debounce ao desmontar componente
+    return () => {
+      debouncedAutoSave.cancel();
+    };
+  }, [componentes, componenteNomes, modelName, selectedSystemId, identificadorId, modeloId, debouncedAutoSave]);
+
+  // Funções para adicionar/remover componentes (mantendo lógica original)
   const encontrarPosicaoLivre = (largura: number, altura: number) => {
     for (let y = 0; y < 100; y++) {
       for (let x = 0; x <= GRID_COLS - largura; x++) {
         const ocupado = componentes.some((c) => {
           const cEndX = c.x + c.w;
           const cEndY = c.y + c.h;
-          return (
-            x < cEndX &&
-            x + largura > c.x &&
-            y < cEndY &&
-            y + altura > c.y
-          );
+          return x < cEndX && x + largura > c.x && y < cEndY && y + altura > c.y;
         });
         if (!ocupado) return { x, y };
       }
@@ -142,53 +191,65 @@ export function useCriarModelo() {
   const adicionarAtributo = () => {
     if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(1, 1);
+    const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      {
-        i: crypto.randomUUID(),
-        type: "atributo",
-        x,
-        y,
-        w: 1,
-        h: 2,
-      },
+      { i: id, type: "atributo", x, y, w: 1, h: 2 },
     ]);
+    setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
 
   const adicionarTexto = () => {
     if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(4, 1);
+    const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      {
-        i: crypto.randomUUID(),
-        type: "texto",
-        x,
-        y,
-        w: 4,
-        h: 1,
-      },
+      { i: id, type: "texto", x, y, w: 4, h: 1 },
     ]);
+    setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
 
   const adicionarTextArea = () => {
     if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(4, 4);
+    const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      {
-        i: crypto.randomUUID(),
-        type: "textarea",
-        x,
-        y,
-        w: 4,
-        h: 4,
-      },
+      { i: id, type: "textarea", x, y, w: 4, h: 4 },
     ]);
+    setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
+  };
+
+  const adicionarBonus = () => {
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    const { x, y } = encontrarPosicaoLivre(1, 2);
+    const id = crypto.randomUUID();
+    setComponentes((prev) => [
+      ...prev,
+      { i: id, type: "bonus", x, y, w: 1, h: 2 },
+    ]);
+    setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
 
   const removerComponente = (i: string) => {
     setComponentes((prev) => prev.filter((a) => a.i !== i));
+    setComponenteNomes((prev) => {
+      const novo = { ...prev };
+      delete novo[i];
+      return novo;
+    });
+    if (identificadorId === i) setIdentificadorId("");
+  };
+
+  const handleSystemChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSystemId(event.target.value);
+  };
+
+  const handleSave = async () => {
+    await salvarModelo();
+    alert("Modelo salvo com sucesso!");
+    navigate("/user");
   };
 
   return {
@@ -200,11 +261,13 @@ export function useCriarModelo() {
     componenteNomes,
     loading,
     identificadorId,
+    modeloId,
     handleSystemChange,
     handleSave,
     adicionarAtributo,
     adicionarTexto,
     adicionarTextArea,
+    adicionarBonus,
     removerComponente,
     setModelName,
     setComponenteNomes,
@@ -212,6 +275,6 @@ export function useCriarModelo() {
     setIdentificadorId,
     GRID_COLS,
     GRID_HEIGHT,
-    ROW_HEIGHT
+    ROW_HEIGHT,
   };
 }
