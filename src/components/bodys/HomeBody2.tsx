@@ -15,7 +15,7 @@ function HomeBody2(){
                         <div className='flex-1/4'>
                             <h4>João Vitor Furlan Dessani</h4>
                             <p className='titulos'>Criatura de Muitas faces</p>
-                            <p className="quote">"Ninguém sabe com ta a mente do front-ender"</p>
+                            <p className="quote">"Ninguém sabe como tá a mente do front-ender"</p>
                         </div>
                         <div className='flex-1/4'>
                             <p></p>
@@ -60,7 +60,7 @@ function HomeBody2(){
                         <div className='flex-1/4'>
                             <h4>Isabela Tamie Miyazato</h4>
                             <p className='titulos'>Titã das chamas</p>
-                            <p className="quote">"The universe leads, we can only follow"</p>
+                            <p className="quote">"The universe leads. We can only follow"</p>
                         </div>
                         <div className='flex-1/4'>
                             <p></p>
