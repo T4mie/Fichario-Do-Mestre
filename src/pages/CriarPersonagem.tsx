@@ -5,6 +5,7 @@ import AtributoDisplay from "../components/sheetDisplay/AtributoMod";
 import TextoDisplay from "../components/sheetDisplay/TextLine";
 import TextAreaDisplay from "../components/sheetDisplay/TextArea";
 import BonusDisplay from "../components/sheetDisplay/BonusMod";
+import PericiaDisplay from "../components/sheetDisplay/PericiaLine";
 import { getAllSheetModels, getSheetModel, getSystemById, saveCharacterData, getCharacterById, createCharacter } from "../backend/firestore";
 import { getCurrentUser } from "../backend/auth";
 
@@ -159,50 +160,79 @@ export default function CriarPersonagem() {
         >
 
           {modelData.componente.map((comp: any) => (
-            <div key={comp.id} className="bg-gray-800 rounded">
+  <div key={comp.id} className="bg-gray-800 rounded">
+    {comp.type === "atributo" && (
+      <AtributoDisplay
+        nome={comp.nome}
+        valorInicial={valores[comp.id] as number}
+        formulaMod={systemData?.formulaModificador}
+        onChange={(valor) =>
+          setValores((prev) => ({ ...prev, [comp.id]: valor }))
+        }
+      />
+    )}
 
-              {comp.type === "atributo" && (
-                <AtributoDisplay
-                  nome={comp.nome}
-                  valorInicial={valores[comp.id] as number}
-                  formulaMod={systemData?.formulaModificador}
-                  onChange={(valor) =>
-                    setValores((prev) => ({ ...prev, [comp.id]: valor }))
-                  }
-                />
-              )}
+    {comp.type === "texto" && (
+      <TextoDisplay
+        nome={comp.nome}
+        textoInicial={valores[comp.id] as string}
+        onChange={(texto) =>
+          setValores((prev) => ({ ...prev, [comp.id]: texto }))
+        }
+      />
+    )}
 
-              {comp.type === "texto" && (
-                <TextoDisplay
-                  nome={comp.nome}
-                  textoInicial={valores[comp.id] as string}
-                  onChange={(texto) =>
-                    setValores((prev) => ({ ...prev, [comp.id]: texto }))
-                  }
-                />
-              )}
+    {comp.type === "bonus" && (
+      <BonusDisplay
+        nome={comp.nome}
+        valorInicial={valores[comp.id] as number}
+        onChange={valor =>
+          setValores(prev => ({ ...prev, [comp.id]: valor }))
+        }
+      />
+    )}
 
-              {comp.type === "bonus" && (
-                <BonusDisplay
-                  nome={comp.nome}
-                  valorInicial={valores[comp.id] as number}
-                  onChange={valor =>
-                    setValores(prev => ({ ...prev, [comp.id]: valor }))
-                  }
-                />
-              )}
+    {comp.type === "textarea" && (
+      <TextAreaDisplay
+        nome={comp.nome}
+        textoInicial={valores[comp.id] as string}
+        onChange={(texto) =>
+          setValores((prev) => ({ ...prev, [comp.id]: texto }))
+        }
+      />
+    )}
 
-              {comp.type === "textarea" && (
-                <TextAreaDisplay
-                  nome={comp.nome}
-                  textoInicial={valores[comp.id] as string}
-                  onChange={(texto) =>
-                    setValores((prev) => ({ ...prev, [comp.id]: texto }))
-                  }
-                />
-              )}
-            </div>
-          ))}
+    {comp.type === "pericia" && (
+      <PericiaDisplay
+        nome={comp.nome}
+        atributoId={comp.atributoId}
+        bonusId={valores[comp.id] as string}
+        atributos={
+          modelData.componente
+            .filter((c: any) => c.type === "atributo")
+            .map((a: any) => ({
+              id: a.id,
+              nome: a.nome,
+              valor: valores[a.id] as number ?? 0,
+            }))
+        }
+        bonus={
+          modelData.componente
+            .filter((c: any) => c.type === "bonus")
+            .map((b: any) => ({
+              id: b.id,
+              nome: b.nome,
+              valor: valores[b.id] as number ?? 0,
+            }))
+        }
+        formulaMod={systemData?.formulaModificador}
+        onChange={(bonusId) =>
+          setValores((prev) => ({ ...prev, [comp.id]: bonusId }))
+        }
+      />
+    )}
+  </div>
+))}
         </GridLayout>
       </div>
     )}

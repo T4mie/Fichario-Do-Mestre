@@ -7,9 +7,10 @@ import {
   saveSheetModel,
 } from "../backend/firestore";
 import { getCurrentUser } from "../backend/auth";
-import { debounce } from "lodash";
+import { debounce, set } from "lodash";
+import { p } from "motion/react-client";
 
-type TipoComponente = "atributo" | "texto" | "textarea" | "bonus";
+type TipoComponente = "atributo" | "texto" | "textarea" | "bonus" | "pericia";
 
 export function useCriarModelo() {
   const [systems, setSystems] = useState<{ id: string; data: any }[]>([]);
@@ -23,6 +24,7 @@ export function useCriarModelo() {
   const [loading, setLoading] = useState(false);
   const [identificadorId, setIdentificadorId] = useState<string>("");
   const [modeloId, setModeloId] = useState<string | null>(null);
+  const [periciaAtributos, setPericiaAtributos] = useState<Record<string, string>>({});
 
   const user = getCurrentUser();
   const navigate = useNavigate();
@@ -51,6 +53,7 @@ export function useCriarModelo() {
           setIdentificadorId(modelData.identificadorId || "");
 
           const comps = modelData.componente || [];
+
           setComponentes(
             comps.map((comp: any) => ({
               i: comp.id,
@@ -69,6 +72,17 @@ export function useCriarModelo() {
             });
             return nomes;
           });
+
+          setPericiaAtributos(() => {
+            const map: Record<string, string> = {};
+            comps.forEach((comp: any) => {
+              if (comp.type === "pericia") {
+                map[comp.id] = comp.atributoId || "";
+              }
+            });
+            return map;
+          });
+
         } else if (!modelId && user) {
           // Novo modelo: inicializa com um componente texto
           const id = crypto.randomUUID();
@@ -124,6 +138,7 @@ export function useCriarModelo() {
             y: c.y,
             w: c.w,
             h: c.h,
+            ...(c.type === "pericia" ? { atributoId: periciaAtributos[c.i] || "" } : {}),
           })),
           identificadorId
         );
@@ -142,6 +157,7 @@ export function useCriarModelo() {
             y: c.y,
             w: c.w,
             h: c.h,
+            ...(c.type === "pericia" ? { atributoId: periciaAtributos[c.i] || "" } : {}),
           })),
           identificadorId
         );
@@ -232,6 +248,17 @@ export function useCriarModelo() {
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
 
+  const adicionarPericia = () => {
+  if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+  const { x, y } = encontrarPosicaoLivre(4, 1);
+  const id = crypto.randomUUID();
+  setComponentes((prev) => [
+    ...prev,
+    { i: id, type: "pericia", x, y, w: 4, h: 1 },
+  ]);
+  setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
+};
+
   const removerComponente = (i: string) => {
     setComponentes((prev) => prev.filter((a) => a.i !== i));
     setComponenteNomes((prev) => {
@@ -262,17 +289,20 @@ export function useCriarModelo() {
     loading,
     identificadorId,
     modeloId,
+    periciaAtributos,
     handleSystemChange,
     handleSave,
     adicionarAtributo,
     adicionarTexto,
     adicionarTextArea,
     adicionarBonus,
+    adicionarPericia,
     removerComponente,
     setModelName,
     setComponenteNomes,
     setComponentes,
     setIdentificadorId,
+    setPericiaAtributos,
     GRID_COLS,
     GRID_HEIGHT,
     ROW_HEIGHT,

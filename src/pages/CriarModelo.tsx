@@ -9,6 +9,7 @@ import AtributoMod from "../components/modelCreate/AtributoMod";
 import TextoMod from "../components/modelCreate/TextLine";
 import TextAreaMod from "../components/modelCreate/TextArea";
 import BonusMod from "../components/modelCreate/BonusMod";
+import PericiaMod from "../components/modelCreate/PericiaLine";
 
 import { useCriarModelo } from "../hooks/useCriarModelo";
 
@@ -23,20 +24,23 @@ export default function CriarModelo() {
     componenteNomes,
     loading,
     identificadorId,
+    periciaAtributos,
     handleSystemChange,
     handleSave,
-    adicionarAtributo, 
+    adicionarAtributo,
     adicionarTexto,
     adicionarTextArea,
     adicionarBonus,
+    adicionarPericia,
     removerComponente,
     setModelName,
     setComponenteNomes,
     setComponentes,
     setIdentificadorId,
+    setPericiaAtributos,
     GRID_COLS,
     GRID_HEIGHT,
-    ROW_HEIGHT
+    ROW_HEIGHT,
   } = useCriarModelo();
 
   const navigate = useNavigate();
@@ -76,6 +80,9 @@ export default function CriarModelo() {
         </button>
         <button onClick={adicionarBonus}>
           + Bônus
+        </button>
+        <button onClick={adicionarPericia}>
+          + Perícia
         </button>
         <button
           onClick={handleSave}
@@ -200,6 +207,31 @@ export default function CriarModelo() {
                         setComponenteNomes((prev) => ({
                           ...prev,
                           [comp.i]: nome,
+                        }));
+                      }}
+                    />
+                  )}
+                  {comp.type === "pericia" && (
+                    <PericiaMod
+                      atributos={componentes.filter(c => c.type === "atributo").map(c => ({
+                        id: c.i,
+                        nome: componenteNomes[c.i] || "",
+                      }))}
+                      bonus={componentes.filter(c => c.type === "bonus").map(c => ({
+                        id: c.i,
+                        nome: componenteNomes[c.i] || "",
+                        valor: 0,
+                      }))}
+                      initialNome={componenteNomes[comp.i] || ""}
+                      initialAtributoId={periciaAtributos[comp.i] || ""}
+                      onChange={(nome, atributoId) => {
+                        setComponenteNomes((prev) => ({
+                          ...prev,
+                          [comp.i]: nome,
+                        }));
+                        setPericiaAtributos((prev) => ({
+                          ...prev,
+                          [comp.i]: atributoId,
                         }));
                       }}
                     />
