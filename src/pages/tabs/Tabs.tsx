@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../backend/auth";
 import { getCharacters, getAllSheetModels, deleteSheetModel, deleteCharacter } from "../../backend/firestore";
 import "./Tabs.css";
+import Construcao from '../../assets/images/Construção.png';
+import BannerConstrucao from "../../components/banners/BannerConstrucao";
 
 import AddButton from "../../components/buttons/AddButton";
 import CharacterButton from "../../components/buttons/CharacterButton";
 import ModelButton from "../../components/buttons/ModeloButton";
+
 
 function Tabs() {
   const [toggle, setToggle] = useState(1);
@@ -120,12 +123,12 @@ const handleDeleteCharacter = async (charId: string) => {
 
         {/* Outras Tabs*/}
         <div className={toggle === 3 ? "show-content" : "content"}>
-          <h2>Seus Sistemas</h2>
-          <p>ENIGMA DO MEDO</p>
+          <BannerConstrucao image={Construcao}></BannerConstrucao>
+          <h2>Sob Construção, agradecemos a compreensão.</h2>
         </div>
         <div className={toggle === 4 ? "show-content" : "content"}>
-          <h2>Suas campanhas</h2>
-          <p>Campanhas mágicas LEGAL</p>
+          <BannerConstrucao image={Construcao}></BannerConstrucao>
+          <h2>Sob Construção, agradecemos a compreensão.</h2>
         </div>
       </div>
     </div>
