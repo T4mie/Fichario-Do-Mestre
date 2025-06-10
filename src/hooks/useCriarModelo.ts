@@ -7,10 +7,9 @@ import {
   saveSheetModel,
 } from "../backend/firestore";
 import { getCurrentUser } from "../backend/auth";
-import { debounce, set } from "lodash";
-import { p } from "motion/react-client";
+import { debounce } from "lodash";
 
-type TipoComponente = "atributo" | "texto" | "textarea" | "bonus" | "pericia";
+type TipoComponente = "atributo" | "texto" | "textarea" | "bonus" | "pericia" | "numero" | "barra";
 
 export function useCriarModelo() {
   const [systems, setSystems] = useState<{ id: string; data: any }[]>([]);
@@ -25,14 +24,15 @@ export function useCriarModelo() {
   const [identificadorId, setIdentificadorId] = useState<string>("");
   const [modeloId, setModeloId] = useState<string | null>(null);
   const [periciaAtributos, setPericiaAtributos] = useState<Record<string, string>>({});
+  const [componenteCores, setComponenteCores] = useState<Record<string, string>>({});
 
   const user = getCurrentUser();
   const navigate = useNavigate();
   const { modelId } = useParams<{ modelId: string }>();
 
   const GRID_COLS = 12;
-  const NUM_ROWS = 20;
-  const ROW_HEIGHT = 55;
+  const NUM_ROWS = 15;
+  const ROW_HEIGHT = 50;
   const GRID_HEIGHT = NUM_ROWS * ROW_HEIGHT;
 
   // Carregar sistemas e modelo (se houver)
@@ -71,6 +71,16 @@ export function useCriarModelo() {
               nomes[comp.id] = comp.nome || "Sem nome";
             });
             return nomes;
+          });
+
+          setComponenteCores(() => {
+            const cores: Record<string, string> = {};
+            comps.forEach((comp: any) => {
+              if (comp.type === "barra") {
+                cores[comp.id] = comp.cor || "#a16207";
+              }
+            });
+            return cores;
           });
 
           setPericiaAtributos(() => {
@@ -139,6 +149,9 @@ export function useCriarModelo() {
             w: c.w,
             h: c.h,
             ...(c.type === "pericia" ? { atributoId: periciaAtributos[c.i] || "" } : {}),
+            ...(c.type === "barra" ? { cor: componenteCores[c.i] || "#a16207" } : {}),
+            
+            
           })),
           identificadorId
         );
@@ -158,6 +171,7 @@ export function useCriarModelo() {
             w: c.w,
             h: c.h,
             ...(c.type === "pericia" ? { atributoId: periciaAtributos[c.i] || "" } : {}),
+            ...(c.type === "barra" ? { cor: componenteCores[c.i] || "#a16207" } : {}),
           })),
           identificadorId
         );
@@ -249,15 +263,39 @@ export function useCriarModelo() {
   };
 
   const adicionarPericia = () => {
-  if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
-  const { x, y } = encontrarPosicaoLivre(4, 1);
-  const id = crypto.randomUUID();
-  setComponentes((prev) => [
-    ...prev,
-    { i: id, type: "pericia", x, y, w: 4, h: 1 },
-  ]);
-  setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
-};
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    const { x, y } = encontrarPosicaoLivre(4, 1);
+    const id = crypto.randomUUID();
+    setComponentes((prev) => [
+      ...prev,
+      { i: id, type: "pericia", x, y, w: 4, h: 1 },
+    ]);
+    setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
+  };
+
+  
+  const adicionarNumero = () => {
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    const { x, y } = encontrarPosicaoLivre(2, 1);
+    const id = crypto.randomUUID();
+    setComponentes((prev) => [
+      ...prev,
+      { i: id, type: "numero", x, y, w: 2, h: 1 },
+    ]);
+    setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
+  };
+
+  const adicionarBarra = () => {
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    const { x, y } = encontrarPosicaoLivre(2, 3);
+    const id = crypto.randomUUID();
+    setComponentes((prev) => [
+      ...prev,
+      { i: id, type: "barra", x, y, w: 2, h: 3},
+    ]);
+    setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
+  };
+
 
   const removerComponente = (i: string) => {
     setComponentes((prev) => prev.filter((a) => a.i !== i));
@@ -276,7 +314,6 @@ export function useCriarModelo() {
   const handleSave = async () => {
     await salvarModelo();
     alert("Modelo salvo com sucesso!");
-    navigate("/user");
   };
 
   return {
@@ -290,6 +327,7 @@ export function useCriarModelo() {
     identificadorId,
     modeloId,
     periciaAtributos,
+    componenteCores,
     handleSystemChange,
     handleSave,
     adicionarAtributo,
@@ -297,8 +335,11 @@ export function useCriarModelo() {
     adicionarTextArea,
     adicionarBonus,
     adicionarPericia,
+    adicionarNumero,
+    adicionarBarra,
     removerComponente,
     setModelName,
+    setComponenteCores,
     setComponenteNomes,
     setComponentes,
     setIdentificadorId,

@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { debounce } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
 import GridLayout from "react-grid-layout";
+
 import AtributoDisplay from "../components/sheetDisplay/AtributoMod";
 import TextoDisplay from "../components/sheetDisplay/TextLine";
 import TextAreaDisplay from "../components/sheetDisplay/TextArea";
 import BonusDisplay from "../components/sheetDisplay/BonusMod";
 import PericiaDisplay from "../components/sheetDisplay/PericiaLine";
+import NumeroDisplay from "../components/sheetDisplay/NumeroLine";
+import BarraDisplay from "../components/sheetDisplay/BarraLine";
+
 import { getAllSheetModels, getSheetModel, getSystemById, saveCharacterData, getCharacterById, createCharacter } from "../backend/firestore";
 import { getCurrentUser } from "../backend/auth";
 
@@ -24,11 +29,20 @@ export default function CriarPersonagem() {
   const { charId } = useParams(); // /criar-personagem/:charId? (opcional)
   const [valores, setValores] = useState<Record<string, string | number>>({});
   const [characterName, setCharacterName] = useState("");
+  const [createdCharId, setCreatedCharId] = useState<string | null>(null);
 
   const GRID_COLS = 12;
   const NUM_ROWS = 20; // número fixo de linhas
   const ROW_HEIGHT = 55;
   const GRID_HEIGHT = NUM_ROWS * ROW_HEIGHT;
+
+  const debouncedAutoSave = useCallback(
+  debounce(() => {
+    if (!modelData) return;
+    salvarPersonagem();
+  }, 1000),
+  [valores, modelData, selectedModelId, charId]
+);
 
   useEffect(() => {
     async function fetchAll() {
@@ -73,16 +87,24 @@ export default function CriarPersonagem() {
 
     fetchModelData();
   }, [selectedModelId]);
+  
+  useEffect(() => {
+  if (modelData) debouncedAutoSave();
+  return () => debouncedAutoSave.cancel();
+}, [valores, modelData, debouncedAutoSave]);
 
-  const handleSalvar = async () => {
+ const salvarPersonagem = async () => {
   if (!user || !modelData) return;
 
-  // Pega o identificadorId do modelo
   const identificadorId = modelData.identificadorId;
   let nomeCampo = valores[identificadorId];
   let characterName = (typeof nomeCampo === "string" ? nomeCampo : "")?.trim() || "Sem nome";
 
-  const characterId = charId || await createCharacter(user.uid); // ← USAR o ID atual, se estiver editando
+  let characterId = charId || createdCharId;
+  if (!characterId) {
+    characterId = await createCharacter(user.uid);
+    setCreatedCharId(characterId);
+  }
 
   await saveCharacterData(
     user.uid,
@@ -92,8 +114,6 @@ export default function CriarPersonagem() {
     characterName,
     valores
   );
-
-  alert("Personagem salvo!");
 };
 
   const layout = modelData?.componente?.map((comp: any) => ({
@@ -126,7 +146,7 @@ export default function CriarPersonagem() {
       {/* Botão Salvar, se houver modelData */}
       {modelData && (
         <button
-          onClick={handleSalvar}
+          onClick={salvarPersonagem}
           className=" ml-auto text-white px-1 py-2 rounded"
         >
           Salvar Personagem
@@ -182,6 +202,16 @@ export default function CriarPersonagem() {
       />
     )}
 
+    {comp.type === "numero" && (
+      <NumeroDisplay
+        nome={comp.nome}
+        valorInicial={valores[comp.id] as number}
+        onChange={(valor) =>
+          setValores((prev) => ({ ...prev, [comp.id]: valor }))
+        }
+      />
+    )}
+
     {comp.type === "bonus" && (
       <BonusDisplay
         nome={comp.nome}
@@ -198,6 +228,29 @@ export default function CriarPersonagem() {
         textoInicial={valores[comp.id] as string}
         onChange={(texto) =>
           setValores((prev) => ({ ...prev, [comp.id]: texto }))
+        }
+      />
+    )}
+
+    {comp.type === "barra" && (
+      <BarraDisplay
+        nome={comp.nome}
+        valorAtual={
+          typeof valores[comp.id] === "object" && valores[comp.id] !== null
+            ? (valores[comp.id] as any).atual
+            : 0
+        }
+        valorTotal={
+          typeof valores[comp.id] === "object" && valores[comp.id] !== null
+            ? (valores[comp.id] as any).total
+            : comp.valorTotal ?? 100
+        }
+        cor={comp.cor || "#a16207"}
+        onChange={(atual, total) =>
+          setValores((prev) => ({
+            ...prev,
+            [comp.id]: { atual, total },
+          }))
         }
       />
     )}

@@ -10,6 +10,8 @@ import TextoMod from "../components/modelCreate/TextLine";
 import TextAreaMod from "../components/modelCreate/TextArea";
 import BonusMod from "../components/modelCreate/BonusMod";
 import PericiaMod from "../components/modelCreate/PericiaLine";
+import NumeroMod from "../components/modelCreate/NumeroLine";
+import BarraLine from "../components/modelCreate/BarraLine";
 
 import { useCriarModelo } from "../hooks/useCriarModelo";
 
@@ -25,6 +27,7 @@ export default function CriarModelo() {
     loading,
     identificadorId,
     periciaAtributos,
+    componenteCores,
     handleSystemChange,
     handleSave,
     adicionarAtributo,
@@ -32,8 +35,11 @@ export default function CriarModelo() {
     adicionarTextArea,
     adicionarBonus,
     adicionarPericia,
+    adicionarNumero,
+    adicionarBarra,
     removerComponente,
     setModelName,
+    setComponenteCores,
     setComponenteNomes,
     setComponentes,
     setIdentificadorId,
@@ -78,11 +84,17 @@ export default function CriarModelo() {
         <button onClick={adicionarTextArea}>
           + Caixa de Texto
         </button>
+        <button onClick={adicionarNumero}>
+          + Número
+        </button>
         <button onClick={adicionarBonus}>
           + Bônus
         </button>
         <button onClick={adicionarPericia}>
           + Perícia
+        </button>
+        <button onClick={adicionarBarra}>
+          + Status
         </button>
         <button
           onClick={handleSave}
@@ -189,6 +201,17 @@ export default function CriarModelo() {
                       }}
                     />
                   )}
+                  {comp.type === "numero" && (
+                    <NumeroMod
+                      initialNome={componenteNomes[comp.i] || ""}
+                      onChange={(nome) => {
+                        setComponenteNomes((prev) => ({
+                          ...prev,
+                          [comp.i]: nome,
+                        }));
+                      }}
+                    />
+                  )}
                   {comp.type === "texto" && (
                     <TextoMod
                       initialNome={componenteNomes[comp.i] || ""}
@@ -207,6 +230,22 @@ export default function CriarModelo() {
                         setComponenteNomes((prev) => ({
                           ...prev,
                           [comp.i]: nome,
+                        }));
+                      }}
+                    />
+                  )}
+                  {comp.type === "barra" && (
+                    <BarraLine
+                      initialNome={componenteNomes[comp.i] || ""}
+                      initialCor={componenteCores[comp.i] || "#a16207"}
+                      onChange={(nome, _vidaAtual, _vidaTotal, cor) => {
+                        setComponenteNomes((prev) => ({
+                          ...prev,
+                          [comp.i]: nome,
+                        }));
+                        setComponenteCores((prev) => ({
+                          ...prev,
+                          [comp.i]: cor,
                         }));
                       }}
                     />
