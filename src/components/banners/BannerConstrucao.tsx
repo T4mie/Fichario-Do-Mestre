@@ -3,7 +3,7 @@ import './Css/ConstrucaoCSS.css'
 function BannerConstrucao(props: { image: string | undefined }){
 return(
     <div>
-        <img src={props.image} alt="Área em Construção" className='w-half h-half object-cover items-center'/>
+        <img src={props.image} alt="Área em Construção" className='w-100 h-100 object-cover items-center'/>
     </div>
 )
 
