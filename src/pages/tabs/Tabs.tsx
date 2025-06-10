@@ -25,7 +25,7 @@ function Tabs() {
 
   const buscarPersonagens = async () => {
     try {
-      const user = getCurrentUser();
+      const user = getCurrentUser()!;
       const characters = await getCharacters(user.uid);
       setPersonagens(characters);
     } catch (error) {
@@ -35,7 +35,7 @@ function Tabs() {
 
   const buscarModelos = async () => {
     try {
-      const user = getCurrentUser();
+      const user = getCurrentUser()!;
       const models = await getAllSheetModels(user.uid);
       setModelList(models);
     } catch (error) {
@@ -46,7 +46,7 @@ function Tabs() {
   const handleDeleteModel = async (modelId: string) => {
   if (window.confirm("Tem certeza que deseja deletar este modelo?")) {
     try {
-      const user = getCurrentUser();
+      const user = getCurrentUser()!;
       await deleteSheetModel(user.uid, modelId);
       buscarModelos();
     } catch (error) {
@@ -58,7 +58,7 @@ function Tabs() {
 const handleDeleteCharacter = async (charId: string) => {
   if (window.confirm("Tem certeza que deseja deletar este personagem?")) {
     try {
-      const user = getCurrentUser();
+      const user = getCurrentUser()!;
       await deleteCharacter(user.uid, charId);
       buscarPersonagens();
     } catch (error) {

@@ -20,7 +20,7 @@ export default function ModelButton({
   useEffect(() => {
     const fetchModelName = async () => {
       try {
-        const user = getCurrentUser();
+        const user = getCurrentUser()!;
         const models = await getAllSheetModels(user.uid);
         const model = models.find((m) => m.id === modelId);
 

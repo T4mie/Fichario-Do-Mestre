@@ -7,17 +7,40 @@ import User from "./pages/User";
 import CriarPersonagem from "./pages/CriarPersonagem";
 import CriarModelo from "./pages/CriarModelo";
 
+import ProtectedRoute from "../src/components/headers/ProtectedRoute";
+
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/cadastro" element={<CriarConta />}/>
       <Route path="/login" element={<Login />}/>
-      <Route path="/user" element={<User />}/>
-      <Route path="/personagem" element={<CriarPersonagem />} />
-      <Route path="/personagem/:charId?" element={<CriarPersonagem />} />
-      <Route path="/criar-modelo" element={<CriarModelo />}/>
-      <Route path="/criar-modelo/:modelId?" element={<CriarModelo />} />
+      {/* Rotas protegidas */}
+      <Route path="/user" element={
+        <ProtectedRoute>
+          <User />
+        </ProtectedRoute>
+      }/>
+      <Route path="/personagem" element={
+        <ProtectedRoute>
+          <CriarPersonagem />
+        </ProtectedRoute>
+      }/>
+      <Route path="/personagem/:charId?" element={
+        <ProtectedRoute>
+          <CriarPersonagem />
+        </ProtectedRoute>
+      }/>
+      <Route path="/criar-modelo" element={
+        <ProtectedRoute>
+          <CriarModelo />
+        </ProtectedRoute>
+      }/>
+      <Route path="/criar-modelo/:modelId?" element={
+        <ProtectedRoute>
+          <CriarModelo />
+        </ProtectedRoute>
+      }/>
     </Routes>
   );
 }

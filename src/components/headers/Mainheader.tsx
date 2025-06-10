@@ -1,8 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";    
 import { BookOpen, UserRound, UserRoundX } from 'lucide-react';
 import { useEffect, useRef, useState } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../../backend/firebase";
+import { onAuthChange, logout } from "../../backend/auth"; // <-- use só suas funções
 
 function Mainheader() {
   const navigate = useNavigate();
@@ -11,7 +10,7 @@ function Mainheader() {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthChange((user) => {
       setIsAuthenticated(!!user);
     });
     return () => unsubscribe();
@@ -37,11 +36,10 @@ function Mainheader() {
     };
   }, [showDropdown]);
 
-  const handleAuthClick = () => {
+  const handleAuthClick = async () => {
     if (isAuthenticated) {
-      signOut(auth).then(() => {
-        navigate("/"); // ou "/login", conforme preferir
-      });
+      await logout(); // <-- chama sua função
+      navigate("/");
     } else {
       navigate("/login");
     }

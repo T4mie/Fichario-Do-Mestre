@@ -1,7 +1,7 @@
 // CharacterButton.tsx
 import { useEffect, useState } from "react";
 import { EllipsisVertical } from "lucide-react";
-import { getCurrentUser } from "../../backend/auth";
+
 
 interface CharacterButtonProps {
   characterId: string;

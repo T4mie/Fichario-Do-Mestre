@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
 import {
   createSheetModel,
   getSheetModel,
@@ -27,7 +27,6 @@ export function useCriarModelo() {
   const [componenteCores, setComponenteCores] = useState<Record<string, string>>({});
 
   const user = getCurrentUser();
-  const navigate = useNavigate();
   const { modelId } = useParams<{ modelId: string }>();
 
   const GRID_COLS = 12;
