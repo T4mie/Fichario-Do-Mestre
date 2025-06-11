@@ -10,6 +10,7 @@ import { getCurrentUser } from "../backend/auth";
 import { debounce } from "lodash";
 
 type TipoComponente = "atributo" | "texto" | "textarea" | "bonus" | "pericia" | "numero" | "barra";
+import { toast } from 'sonner'
 
 export function useCriarModelo() {
   const [systems, setSystems] = useState<{ id: string; data: any }[]>([]);
@@ -110,7 +111,8 @@ export function useCriarModelo() {
           setIdentificadorId(id);
         }
       } catch (error) {
-        console.error("Erro ao carregar dados:", error);
+        const erro = "Erro ao carregar dados: " + error
+        toast.error(erro);
       }
     }
 
@@ -176,7 +178,8 @@ export function useCriarModelo() {
         );
       }
     } catch (error) {
-      console.error("Erro ao salvar modelo:", error);
+      const erro = "Erro ao salvar modelo: "+error
+      toast.error(erro);
     } finally {
       setLoading(false);
     }
@@ -218,7 +221,7 @@ export function useCriarModelo() {
   };
 
   const adicionarAtributo = () => {
-    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(1, 1);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
@@ -229,7 +232,7 @@ export function useCriarModelo() {
   };
 
   const adicionarTexto = () => {
-    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(4, 1);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
@@ -240,7 +243,7 @@ export function useCriarModelo() {
   };
 
   const adicionarTextArea = () => {
-    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(4, 4);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
@@ -251,7 +254,7 @@ export function useCriarModelo() {
   };
 
   const adicionarBonus = () => {
-    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(1, 2);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
@@ -262,7 +265,7 @@ export function useCriarModelo() {
   };
 
   const adicionarPericia = () => {
-    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(4, 1);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
@@ -274,7 +277,7 @@ export function useCriarModelo() {
 
   
   const adicionarNumero = () => {
-    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(2, 1);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
@@ -285,7 +288,7 @@ export function useCriarModelo() {
   };
 
   const adicionarBarra = () => {
-    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(2, 3);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
@@ -312,7 +315,7 @@ export function useCriarModelo() {
 
   const handleSave = async () => {
     await salvarModelo();
-    alert("Modelo salvo com sucesso!");
+    toast.success("Modelo salvo com sucesso!");
   };
 
   return {

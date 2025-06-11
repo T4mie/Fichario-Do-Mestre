@@ -1,4 +1,8 @@
 import Img from '../../assets/images/DescriçãoProjeto.png'
+import Artur from '../../assets/images/Artur.jpg'
+import Vezzu from '../../assets/images/Vezzu.jpg'
+import Isa from '../../assets/images/ISA.jpg'
+import Furlan from '../../assets/images/Furlan.jpg'
 import './css/HomeBody2Css.css'
 function HomeBody2(){
     return (
@@ -10,7 +14,7 @@ function HomeBody2(){
                 <div className="card animate-slide-up flex-1/4 m-3">
                     <div className="flex  items-center pt-4 flex-col gap-5">
                         <div className='w-60 h-60'>
-                            <img src={Img} alt="" className='w-full h-full object-fill p-1' />
+                            <img src={Furlan} alt="" className='w-full h-full object-fill p-1' />
                         </div>
                         <div className='flex-1/4'>
                             <h4>João Vitor Furlan Dessani</h4>
@@ -25,7 +29,7 @@ function HomeBody2(){
                 <div className="card animate-slide-up flex-1/4 m-3">
                     <div className="flex  items-center pt-4 flex-col gap-5">
                         <div className='w-60 h-60'>
-                            <img src={Img} alt="" className='w-full h-full object-fill p-1' />
+                            <img src={Artur} alt="" className='w-full h-full object-fill p-1' />
                         </div>
                         <div className='flex-1/4'>
                             <h4>Artur Adam de Oliveira</h4>
@@ -40,7 +44,7 @@ function HomeBody2(){
                 <div className="card animate-slide-up flex-1/4 m-3">
                     <div className="flex  items-center pt-4 flex-col gap-5">
                         <div className='w-60 h-60'>
-                            <img src={Img} alt="" className='w-full h-full object-fill p-1' />
+                            <img src={Vezzu} alt="" className='w-full h-full object-fill p-1' />
                         </div>
                         <div className='flex-1/4'>
                             <h4>Isabela Moraes Vezzu</h4>
@@ -55,7 +59,7 @@ function HomeBody2(){
                 <div className="card animate-slide-up flex-1/4 m-3">
                     <div className="flex  items-center pt-4 flex-col gap-5">
                         <div className='w-60 h-60'>
-                            <img src={Img} alt="" className='w-full h-full object-fill p-1' />
+                            <img src={Isa} alt="" className='w-full h-full object-fill p-1' />
                         </div>
                         <div className='flex-1/4'>
                             <h4>Isabela Tamie Miyazato</h4>
