@@ -87,7 +87,4 @@ export default function CriarConta() {
     </div>
   );
 }
-function sleep(arg0: number) {
-  throw new Error("Function not implemented.");
-}
 
