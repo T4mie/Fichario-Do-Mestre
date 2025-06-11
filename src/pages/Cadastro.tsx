@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { registerWithEmail } from "../backend/auth";
 import { NavLink, useNavigate } from "react-router-dom";
-import { div } from "motion/react-client";
+import { Toaster, toast } from "sonner";
 
 export default function CriarConta() {
   // declarando as constantes do email e da senha
@@ -15,13 +15,13 @@ export default function CriarConta() {
   // método de cadastro
   const handleCadastro = async () => {
     if (senha !== confirmarSenha) {
-      alert("As senhas não coincidem.");
+      toast.error("As senhas não coincidem.")
       return;
     }
     
     try {
       await registerWithEmail(email, senha); 
-      alert("Conta criada com sucesso!");
+      toast.success("Conta criada com sucesso!")
       navigate("/user"); 
     } 
     // tratamento de erros
@@ -43,13 +43,14 @@ export default function CriarConta() {
           default:
             mensagem = error.message;
         }
-      alert(mensagem);     
+      toast.error(mensagem);  
     }
   };
 
   // tela
   return (
     <div className="w-screen h-screen flex items-center justify-center">
+      <Toaster richColors position="top-right"></Toaster>
       <div className=" p-8 rounded-xl shadow-lg w-full max-w-md text-center border-1 min-h-[400px] content-center">
         <p className="text-2xl font-bold mb-8">Criar Conta</p>
         <input
@@ -86,3 +87,7 @@ export default function CriarConta() {
     </div>
   );
 }
+function sleep(arg0: number) {
+  throw new Error("Function not implemented.");
+}
+

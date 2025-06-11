@@ -16,7 +16,8 @@ export default function TextoMod({ onChange, initialNome }: TextoModProps) {
   }, [nome, texto]);
 
   return (
-      <div className="w-full h-full flex flex-row justify-center bg-gray-800 items-center gap-2 drag-handle">
+      <div className="w-full h-full flex flex-row justify-center bg-gray-800 items-center gap-2 drag-handle rounded">
+        <div></div>
         <input
           type="text"
           placeholder="Nome do campo"
