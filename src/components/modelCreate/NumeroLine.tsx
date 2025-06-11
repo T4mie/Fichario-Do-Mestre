@@ -23,7 +23,7 @@ export default function NumeroMod({ onChange, initialNome }: NumeroModProps) {
       />
       <input
         type="number"
-        className="m-2 w-1/2 p-1 font-semibold bg-gray-700 text-white rounded drag-cancel text-right opacity-60 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        className="m-2 w-1/2 p-1 font-semibold bg-gray-700 text-white rounded drag-cancel text-right  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         placeholder="0"
       />
     </div>

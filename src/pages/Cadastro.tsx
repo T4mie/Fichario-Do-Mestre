@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { registerWithEmail } from "../backend/auth";
 import { NavLink, useNavigate } from "react-router-dom";
+import { div } from "motion/react-client";
 
 export default function CriarConta() {
   // declarando as constantes do email e da senha
@@ -29,32 +30,32 @@ export default function CriarConta() {
 
   // tela
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-fundo">
-      <div className="bg-caixa p-8 rounded-xl shadow-lg w-full max-w-md text-fundo text-center">
-        <h2 className="text-3xl font-bold mb-6 font-montserrat">Criar Conta</h2>
+    <div className="w-screen h-screen flex items-center justify-center">
+      <div className=" p-8 rounded-xl shadow-lg w-full max-w-md text-center border-1 min-h-[400px] content-center">
+        <p className="text-2xl font-bold mb-8">Criar Conta</p>
         <input
-          className="w-full mb-4 p-2 rounded"
+          className="w-full mb-4 p-2 rounded border-1 hover:bg-[#12447e]"
           type="email"
           placeholder="Digite seu email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          className="w-full mb-4 p-2 rounded"
+          className="w-full mb-4 p-2 rounded border-1 hover:bg-[#12447e]"
           type="password"
           placeholder="Digite sua senha"
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
         />
         <input
-          className="w-full mb-4 p-2 rounded"
+          className="w-full mb-4 p-2 rounded border-1 hover:bg-[#12447e]"
           type="password"
           placeholder="Confirmar senha"
           value={confirmarSenha}
           onChange={(e) => setConfirmarSenha(e.target.value)}
         />
         <button
-          className="w-full bg-fundo text-caixa p-2 rounded hover:opacity-90"
+          className="w-full bg-fundo text-caixa p-2 rounded hover:opacity-90 border-1 hover:bg-[#12447e]"
           onClick={handleCadastro}
         >
           Cadastrar

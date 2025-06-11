@@ -1,4 +1,5 @@
 // src/components/sheet/TextoDisplay.tsx
+import { div } from "motion/react-client";
 import { useState, useEffect } from "react";
 
 interface TextoDisplayProps {
@@ -19,15 +20,18 @@ export default function TextoDisplay({
   }, [texto]);
 
   return (
-    <div className="h-[100%] flex items-center border rounded bg-gray-800 shadow  text-white">
-      <div className="flex-1/4 font-semibold text-center">{nome}</div>
-      <input
-        type="text"
+    <div className="w-full h-full flex flex-row justify-center bg-gray-800 items-center gap-2">
+      <div></div>
+      <div className="flex-1/3 h-[80%] flex items-center justify-center text-center bg-gray-700 rounded">
+        {nome}
+      </div>
+      <input 
+        type="text" 
         value={texto}
         onChange={(e) => setTexto(e.target.value)}
-        className="flex-grow h-[80%] flex-3/4 rounded p-2 bg-gray-700 border text-white"
-        placeholder="Digite o texto..."
+        className="flex-2/3 h-[80%] rounded p-2 bg-gray-700"
       />
+      <div></div>
     </div>
   );
 }

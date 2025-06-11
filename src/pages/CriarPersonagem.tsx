@@ -126,14 +126,14 @@ export default function CriarPersonagem() {
 
   return (
     <div className="p-4 space-y-4">
-    {/* Header organizado */}
-    <div className="flex items-center gap-4 p-4 bg-gray-900 text-white rounded">
+        <div className="flex flex-row items-start p-4 gap-[3px] bg-gray-700 text-white rounded">
       {/* Só mostra o select se NÃO estiver editando */}
       {!charId && (
         <select
           value={selectedModelId}
           onChange={(e) => setSelectedModelId(e.target.value)}
-          className="border p-2 rounded text-black">
+          className="rounded text-white bg-gray-900 px-2 py-1 "
+        >
           <option value="">Selecione um modelo de ficha</option>
           {models.map((m) => (
             <option key={m.id} value={m.id}>
@@ -147,21 +147,22 @@ export default function CriarPersonagem() {
       {modelData && (
         <button
           onClick={salvarPersonagem}
-          className=" ml-auto text-white px-1 py-2 rounded"
+          className="rounded bg-blue-600 px-3 py-1"
         >
           Salvar Personagem
         </button>
       )}
 
-      {/* Botão Voltar alinhado à direita */}
+      {/* Botão Voltar */}
       <button
         onClick={() => navigate("/user")}
-        className="px-3 py-1 rounded"
+        className="rounded bg-red-600 px-3 py-1"
       >
         Voltar
       </button>
-
     </div>
+
+
 
       {/* Renderização do layout com os componentes */}
       {modelData && (

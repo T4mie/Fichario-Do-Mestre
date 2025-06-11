@@ -1,6 +1,5 @@
 import GridLayout from "react-grid-layout";
 import { useNavigate } from "react-router-dom";
-import { X } from "lucide-react";
 
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -57,7 +56,7 @@ export default function CriarModelo() {
         <select
           value={selectedSystemId}
           onChange={handleSystemChange}
-          className="border p-2 rounded text-black"
+          className="border p-2 rounded text-white"
         >
           <option value="">Selecione o Sistema...</option>
           {systems.map((system) => (
@@ -72,30 +71,33 @@ export default function CriarModelo() {
           value={modelName}
           onChange={(e) => setModelName(e.target.value)}
           placeholder="Nome do Modelo"
-          className="border p-2 rounded text-black"
+          className="border p-2 rounded text-white"
         />
-
-        <button onClick={adicionarAtributo} >
-          + Atributo
-        </button>
-        <button onClick={adicionarTexto}>
-          + Texto
-        </button>
-        <button onClick={adicionarTextArea}>
-          + Caixa de Texto
-        </button>
-        <button onClick={adicionarNumero}>
-          + Número
-        </button>
-        <button onClick={adicionarBonus}>
-          + Bônus
-        </button>
-        <button onClick={adicionarPericia}>
-          + Perícia
-        </button>
-        <button onClick={adicionarBarra}>
-          + Status
-        </button>
+        <div className="overflow-x-auto whitespace-nowrap p-2">
+          <div className="flex flex-row gap-x-2">
+            <button onClick={adicionarAtributo} >
+              + Atributo
+            </button>
+            <button onClick={adicionarTexto}>
+              + Texto
+            </button>
+            <button onClick={adicionarTextArea}>
+              + Caixa de Texto
+            </button>
+            <button onClick={adicionarNumero}>
+              + Número
+            </button>
+            <button onClick={adicionarBonus}>
+              + Bônus
+            </button>
+            <button onClick={adicionarPericia}>
+              + Perícia
+            </button>
+            <button onClick={adicionarBarra}>
+              + Status
+            </button>
+            </div>
+        </div>
         <button
           onClick={handleSave}
           disabled={loading || !modelName || !selectedSystemId}
@@ -166,7 +168,8 @@ export default function CriarModelo() {
                       }
                       removerComponente(comp.i);
                     }}
-                    className={`absolute top-1 right-1 text-red-400 hover:text-red-600 z-10 transition-opacity duration-200
+                    style={{backgroundColor:'rgba(201, 76, 76, 0)'}}
+                    className={` flex items-center justify-center w-[36px] h-[36px] absolute top-1 right-1 text-red-400 hover:text-red-600 transition-opacity duration-200
                       ${
                         comp.type === "texto" && componentes.filter((c) => c.type === "texto").length === 1
                           ? "opacity-30 cursor-not-allowed"
@@ -174,9 +177,9 @@ export default function CriarModelo() {
                       }`}
                     disabled={comp.type === "texto" && componentes.filter((c) => c.type === "texto").length === 1}
                   >
-                    <X size={18} />
+                      <p>X</p>
                   </button>
-
+                  
                   {/* Renderização do componente correto */}
                   {comp.type === "atributo" && (
                     <AtributoMod

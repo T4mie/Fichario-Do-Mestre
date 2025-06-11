@@ -49,8 +49,8 @@ export default function CharacterButton({
 
       {/* Menu flutuante */}
       {menuOpen && (
-        <div className="absolute top-10 right-2 shadow z-20 w-32 text-sm">
-          <button onClick={onEdit} className="w-full px-4 py-2 hover:bg-gray-100 text-left">Acessar</button>
+        <div className="absolute top-6 right-2 shadow z-20 w-32 text-sm rounded-md ">
+          <button onClick={onEdit} className="w-full px-4 py-2 mb-1 hover:bg-gray-100 text-left">Acessar</button>
           <button onClick={onDelete} className="w-full px-4 py-2 text-red-600 hover:bg-red-50 text-left">Deletar</button>
         </div>
       )}

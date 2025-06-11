@@ -41,16 +41,18 @@ export default function BonusDisplay({
   }
 
   return (
-    <div className="flex flex-col h-full border rounded bg-gray-800 shadow text-white p-2 items-center">
-      <div className="mb-2 font-semibold text-center w-full truncate">{nome}</div>
-      <input
-        type="text"
-        value={input}
-        onChange={handleInput}
-        className="w-[75%] h-[75%] text-2xl text-center border rounded bg-gray-700 text-white"
-        placeholder="+0"
-        inputMode="text"
-      />
+  <div className="drag-handle rounded bg-gray-800 shadow w-full h-full flex flex-col items-center p-2 gap-1">
+    <div className="w-full basis-1/3 flex items-center justify-center font-semibold drag-cancel text-sm text-center truncate rounded bg-gray-700">
+      {nome}
     </div>
+    <input
+      type="text"
+      value={input}
+      onChange={handleInput}
+      className="w-full basis-2/3 text-2xl text-center rounded drag-cancel bg-gray-700"
+      placeholder="+0"
+      inputMode="text"
+    />
+  </div>
   );
 }

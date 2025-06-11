@@ -29,38 +29,32 @@ export default function Login() {
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-fundo relative">
-      {/* Botão de voltar */}
-      <button
-        className="absolute top-6 left-[95%] p-2 rounded-full hover:bg-gray-200 transition bg-transparent"
-        onClick={() => navigate("/")}
-        title="Voltar para a página inicial"
-      >
-        <Undo2 size={25} />
-      </button>
-      <div className="bg-caixa p-8 rounded-xl shadow-lg w-full max-w-md text-fundo text-center">
-        <h2 className="text-3xl font-bold mb-6 font-montserrat">Login</h2>
+    
+    <div className="w-screen h-screen flex items-center justify-center ">
+      <div className="p-8 rounded-xl shadow-lg w-full max-w-md text-fundo text-center border-1 min-h-[400px] content-center">
+        <p className='text-2xl font-bold mb-12'>Login</p>
         <input
-          className="w-full mb-4 p-2 rounded"
+          className="w-full mb-4 p-2 rounded border-1 hover:bg-[#12447e]"
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          className="w-full mb-4 p-2 rounded"
+          className="w-full mb-4 p-2 rounded border-1 hover:bg-[#12447e]"
           type="password"
           placeholder="Senha"
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
         />
         <button
-          className="w-1/2 bg-fundo text-caixa p-2 rounded hover:opacity-90"
+          className="w-full bg-fundo text-caixa p-2 mt-4 rounded hover:opacity-90"
           onClick={onLoginClick}
         >
           Entrar
         </button>
-        <p className="mt-4 cursor-pointer hover:opacity-70">
+
+        <p className="mt-6 cursor-pointer hover:opacity-70 ">
           <NavLink to={"/cadastro"}>Cadastre-se</NavLink>
         </p>
       </div>
