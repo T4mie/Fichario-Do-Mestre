@@ -17,7 +17,7 @@ export function useCriarModelo() {
   const [selectedSystemData, setSelectedSystemData] = useState<any>(null);
   const [modelName, setModelName] = useState("");
   const [componentes, setComponentes] = useState<
-    { i: string; type: TipoComponente; x: number; y: number; w: number; h: number }[]
+    { i: string; type: TipoComponente; x: number; y: number; w: number; h: number; locked?: boolean }[]
   >([]);
   const [componenteNomes, setComponenteNomes] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -223,7 +223,7 @@ export function useCriarModelo() {
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "atributo", x, y, w: 1, h: 2 },
+      { i: id, type: "atributo", x, y, w: 1, h: 2 , locked: false},
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
@@ -234,7 +234,7 @@ export function useCriarModelo() {
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "texto", x, y, w: 4, h: 1 },
+      { i: id, type: "texto", x, y, w: 4, h: 1 , locked: false},
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
@@ -245,7 +245,7 @@ export function useCriarModelo() {
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "textarea", x, y, w: 4, h: 4 },
+      { i: id, type: "textarea", x, y, w: 4, h: 4 , locked: false},
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
@@ -256,7 +256,7 @@ export function useCriarModelo() {
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "bonus", x, y, w: 1, h: 2 },
+      { i: id, type: "bonus", x, y, w: 1, h: 2 , locked: false},
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
@@ -267,7 +267,7 @@ export function useCriarModelo() {
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "pericia", x, y, w: 4, h: 1 },
+      { i: id, type: "pericia", x, y, w: 4, h: 1 , locked: false},
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
@@ -279,7 +279,7 @@ export function useCriarModelo() {
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "numero", x, y, w: 2, h: 1 },
+      { i: id, type: "numero", x, y, w: 2, h: 1 , locked: false},
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
@@ -290,7 +290,7 @@ export function useCriarModelo() {
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "barra", x, y, w: 2, h: 3},
+      { i: id, type: "barra", x, y, w: 2, h: 3 , locked: false},
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };

@@ -29,8 +29,14 @@ export default function Login() {
   };
 
   return (
-    
     <div className="w-screen h-screen flex items-center justify-center ">
+      <button
+        className="fixed top-4 right-4 z-50 bg-gray-800 rounded-full p-2 hover:bg-gray-700 transition"
+        onClick={() => navigate("/")}
+        title="Voltar"
+      >
+        <Undo2 size={28} className="text-white" />
+      </button>
       <div className="p-8 rounded-xl shadow-lg w-full max-w-md text-fundo text-center border-1 min-h-[400px] content-center">
         <p className='text-2xl font-bold mb-12'>Login</p>
         <input

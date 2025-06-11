@@ -30,6 +30,12 @@ export default function PericiaMod({
     if (onChange) onChange(nome, atributoId);
   }, [nome, atributoId]);
 
+  useEffect(() => {
+    // Se o atributoId atual não existe mais, seta para o primeiro disponível
+    if (atributos.length > 0 && !atributos.find(a => a.id === atributoId)) {
+      setAtributoId(atributos[0].id);
+    }
+  }, [atributos]);
 
   function handleBonusChange(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedBonusId(e.target.value);

@@ -35,7 +35,7 @@ export default function PericiaDisplay({
   const [selectedBonusId, setSelectedBonusId] = useState(bonusId);
 
   // Busca o atributo selecionado
-  const atributo = atributos.find((a) => a.id === atributoId);
+  const atributo = atributos.find((a) => a.id === atributoId) || atributos[0];
   const valorAtributo = atributo?.valor ?? 0;
   const modAtributo = calcularModificador(valorAtributo, formulaMod);
 

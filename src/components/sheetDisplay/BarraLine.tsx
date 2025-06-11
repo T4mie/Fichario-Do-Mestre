@@ -2,30 +2,31 @@ import { useEffect, useState } from "react";
 
 interface BarraDisplayProps {
   nome: string;
-  valorAtual?: number;
-  valorTotal?: number;
+  valorAtual?: number | "";
+  valorTotal?: number | "";
   cor?: string;
-  onChange?: (valorAtual: number, valorTotal: number) => void;
+  onChange?: (valorAtual: number | "", valorTotal: number | "") => void;
 }
 
 export default function BarraDisplay({
   nome,
-  valorAtual = 0,
-  valorTotal = 100,
+  valorAtual = "",
+  valorTotal = "",
   cor = "#a16207",
   onChange,
 }: BarraDisplayProps) {
-  const [atual, setAtual] = useState<number>(valorAtual);
-  const [total, setTotal] = useState<number>(valorTotal);
+  const [atual, setAtual] = useState<number | "">(valorAtual);
+  const [total, setTotal] = useState<number | "">(valorTotal);
 
   useEffect(() => {
     if (onChange) onChange(atual, total);
   }, [atual, total]);
 
+  const percent =
     typeof atual === "number" &&
     typeof total === "number" &&
     total > 0
-      ? Math.round((atual / total) * 100)
+      ? Math.min((atual / total) * 100, 100)
       : 0;
 
   return (
@@ -40,7 +41,10 @@ export default function BarraDisplay({
           type="number"
           min={0}
           value={atual}
-          onChange={(e) => setAtual(Number(e.target.value))}
+          onChange={(e) => {
+            const v = e.target.value;
+            setAtual(v === "" ? "" : Number(v));
+          }}
           className="w-1/2 p-2 text-3xl text-center font-semibold bg-gray-700 text-white rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           placeholder="Atual"
         />
@@ -48,7 +52,10 @@ export default function BarraDisplay({
           type="number"
           min={1}
           value={total}
-          onChange={(e) => setTotal(Math.max(1, Number(e.target.value)))}
+          onChange={(e) => {
+            const v = e.target.value;
+            setTotal(v === "" ? "" : Math.max(1, Number(v)));
+          }}
           className="w-1/2 p-2 text-3xl text-center font-semibold bg-gray-700 text-white rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           placeholder="Total"
         />
@@ -58,17 +65,12 @@ export default function BarraDisplay({
         <div
           className="h-5 rounded transition-all duration-300"
           style={{
-            width:
-              typeof atual === "number" &&
-              typeof total === "number" &&
-              total > 0
-                ? `${Math.min((atual / total) * 100, 100)}%`
-                : "0%",
+            width: `${percent}%`,
             backgroundColor: cor,
           }}
         />
         <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs text-white font-bold select-none">
-          {atual} / {total}
+          {(atual === "" ? "-" : atual)} / {(total === "" ? "-" : total)}
         </span>
       </div>
     </div>

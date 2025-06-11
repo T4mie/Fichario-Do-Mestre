@@ -124,7 +124,11 @@ export default function CriarModelo() {
               preventCollision={false}
               draggableHandle=".drag-handle"
               draggableCancel=".drag-cancel"
-              layout={componentes}
+              layout={componentes.map(c => ({
+                ...c,
+                isDraggable: !c.locked,
+                isResizable: !c.locked,
+              }))}
               onLayoutChange={(newLayout) => {
                 setComponentes((prev) =>
                   newLayout.map((item) => {

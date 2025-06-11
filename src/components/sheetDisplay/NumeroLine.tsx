@@ -2,16 +2,16 @@ import { useState, useEffect } from "react";
 
 interface NumeroDisplayProps {
   nome: string;
-  valorInicial?: number;
-  onChange?: (valor: number) => void;
+  valorInicial?: number | "";
+  onChange?: (valor: number | "") => void;
 }
 
 export default function NumeroDisplay({
   nome,
-  valorInicial = 0,
+  valorInicial = "",
   onChange,
 }: NumeroDisplayProps) {
-  const [valor, setValor] = useState(valorInicial);
+  const [valor, setValor] = useState<number | "">(valorInicial);
 
   useEffect(() => {
     if (onChange) onChange(valor);
@@ -19,7 +19,7 @@ export default function NumeroDisplay({
 
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     const v = e.target.value.replace(/[^0-9]/g, "");
-    setValor(v === "" ? 0 : parseInt(v, 10));
+    setValor(v === "" ? "" : parseInt(v, 10));
   }
 
   return (
