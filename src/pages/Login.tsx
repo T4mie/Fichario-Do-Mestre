@@ -37,6 +37,9 @@ export async function handleLogin(
         case "auth/too-many-requests":
           errorMessage = "Muitas tentativas. Tente novamente mais tarde.";
           break;
+        case "auth/missing-password":
+          errorMessage = "Por favor digite a senha"
+          break;
         default:
           errorMessage = "Erro ao fazer login: " + error.message;
       }

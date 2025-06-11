@@ -40,6 +40,10 @@ export default function CriarConta() {
           case "auth/network-request-failed":
             mensagem = "Erro de conexão. Verifique sua internet.";
             break;
+          case "auth/missing-password":
+            mensagem = "Por favor digite a senha"
+            break;
+
           default:
             mensagem = error.message;
         }
