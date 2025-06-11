@@ -10,7 +10,6 @@ import { getCurrentUser } from "../backend/auth";
 import { debounce } from "lodash";
 
 type TipoComponente = "atributo" | "texto" | "textarea" | "bonus" | "pericia" | "numero" | "barra";
-import { toast } from 'sonner'
 
 export function useCriarModelo() {
   const [systems, setSystems] = useState<{ id: string; data: any }[]>([]);
@@ -18,7 +17,7 @@ export function useCriarModelo() {
   const [selectedSystemData, setSelectedSystemData] = useState<any>(null);
   const [modelName, setModelName] = useState("");
   const [componentes, setComponentes] = useState<
-    { i: string; type: TipoComponente; x: number; y: number; w: number; h: number; locked?: boolean }[]
+    { i: string; type: TipoComponente; x: number; y: number; w: number; h: number; }[]
   >([]);
   const [componenteNomes, setComponenteNomes] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -111,8 +110,7 @@ export function useCriarModelo() {
           setIdentificadorId(id);
         }
       } catch (error) {
-        const erro = "Erro ao carregar dados: " + error
-        toast.error(erro);
+        console.error("Erro ao carregar dados:", error);
       }
     }
 
@@ -178,8 +176,7 @@ export function useCriarModelo() {
         );
       }
     } catch (error) {
-      const erro = "Erro ao salvar modelo: "+error
-      toast.error(erro);
+      console.error("Erro ao salvar modelo:", error);
     } finally {
       setLoading(false);
     }
@@ -221,79 +218,79 @@ export function useCriarModelo() {
   };
 
   const adicionarAtributo = () => {
-    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(1, 1);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "atributo", x, y, w: 1, h: 2 , locked: false},
+      { i: id, type: "atributo", x, y, w: 1, h: 2 },
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
 
   const adicionarTexto = () => {
-    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(4, 1);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "texto", x, y, w: 4, h: 1 , locked: false},
+      { i: id, type: "texto", x, y, w: 4, h: 1 },
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
 
   const adicionarTextArea = () => {
-    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(4, 4);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "textarea", x, y, w: 4, h: 4 , locked: false},
+      { i: id, type: "textarea", x, y, w: 4, h: 4},
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
 
   const adicionarBonus = () => {
-    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(1, 2);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "bonus", x, y, w: 1, h: 2 , locked: false},
+      { i: id, type: "bonus", x, y, w: 1, h: 2},
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
 
   const adicionarPericia = () => {
-    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(4, 1);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "pericia", x, y, w: 4, h: 1 , locked: false},
+      { i: id, type: "pericia", x, y, w: 4, h: 1 },
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
 
   
   const adicionarNumero = () => {
-    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(2, 1);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "numero", x, y, w: 2, h: 1 , locked: false},
+      { i: id, type: "numero", x, y, w: 2, h: 1 },
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
 
   const adicionarBarra = () => {
-    if (!selectedSystemData) return toast.warning("Selecione um sistema primeiro!");
+    if (!selectedSystemData) return alert("Selecione um sistema primeiro!");
     const { x, y } = encontrarPosicaoLivre(2, 3);
     const id = crypto.randomUUID();
     setComponentes((prev) => [
       ...prev,
-      { i: id, type: "barra", x, y, w: 2, h: 3 , locked: false},
+      { i: id, type: "barra", x, y, w: 2, h: 3 },
     ]);
     setComponenteNomes((prev) => ({ ...prev, [id]: "" }));
   };
@@ -315,7 +312,7 @@ export function useCriarModelo() {
 
   const handleSave = async () => {
     await salvarModelo();
-    toast.success("Modelo salvo com sucesso!");
+    alert("Modelo salvo com sucesso!");
   };
 
   return {

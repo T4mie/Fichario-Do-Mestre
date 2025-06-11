@@ -1,7 +1,9 @@
 import GridLayout from "react-grid-layout";
 import { useNavigate } from "react-router-dom";
+
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+
 import AtributoMod from "../components/modelCreate/AtributoMod";
 import TextoMod from "../components/modelCreate/TextLine";
 import TextAreaMod from "../components/modelCreate/TextArea";
@@ -9,9 +11,8 @@ import BonusMod from "../components/modelCreate/BonusMod";
 import PericiaMod from "../components/modelCreate/PericiaLine";
 import NumeroMod from "../components/modelCreate/NumeroLine";
 import BarraLine from "../components/modelCreate/BarraLine";
-import { useCriarModelo } from "../hooks/useCriarModelo";
-import { Toaster } from "sonner";
 
+import { useCriarModelo } from "../hooks/useCriarModelo";
 
 export default function CriarModelo() {
   const {
@@ -50,7 +51,6 @@ export default function CriarModelo() {
 
   return (
     <div className="flex flex-col h-screen">
-      <Toaster richColors position="top-center"></Toaster>
       <div className="flex items-center gap-4 p-4 bg-gray-900 text-white">
         <select
           value={selectedSystemId}
@@ -74,28 +74,14 @@ export default function CriarModelo() {
         />
         <div className="overflow-x-auto whitespace-nowrap p-2">
           <div className="flex flex-row gap-x-2">
-            <button onClick={adicionarAtributo} >
-              + Atributo
-            </button>
-            <button onClick={adicionarTexto}>
-              + Texto
-            </button>
-            <button onClick={adicionarTextArea}>
-              + Caixa de Texto
-            </button>
-            <button onClick={adicionarNumero}>
-              + Número
-            </button>
-            <button onClick={adicionarBonus}>
-              + Bônus
-            </button>
-            <button onClick={adicionarPericia}>
-              + Perícia
-            </button>
-            <button onClick={adicionarBarra}>
-              + Status
-            </button>
-            </div>
+            <button onClick={adicionarAtributo}>+ Atributo</button>
+            <button onClick={adicionarTexto}>+ Texto</button>
+            <button onClick={adicionarTextArea}>+ Caixa de Texto</button>
+            <button onClick={adicionarNumero}>+ Número</button>
+            <button onClick={adicionarBonus}>+ Bônus</button>
+            <button onClick={adicionarPericia}>+ Perícia</button>
+            <button onClick={adicionarBarra}>+ Status</button>
+          </div>
         </div>
         <button
           onClick={handleSave}
@@ -117,17 +103,12 @@ export default function CriarModelo() {
               cols={GRID_COLS}
               rowHeight={ROW_HEIGHT}
               width={window.innerWidth - 32}
-              isResizable={false}
-              isDraggable={true}
               compactType={null}
-              preventCollision={false}
+              isDraggable={true}
+              isResizable={false}
+              preventCollision={true}
               draggableHandle=".drag-handle"
               draggableCancel=".drag-cancel"
-              layout={componentes.map(c => ({
-                ...c,
-                isDraggable: !c.locked,
-                isResizable: !c.locked,
-              }))}
               onLayoutChange={(newLayout) => {
                 setComponentes((prev) =>
                   newLayout.map((item) => {
@@ -146,7 +127,6 @@ export default function CriarModelo() {
             >
               {componentes.map((comp) => (
                 <div key={comp.i} data-grid={comp} className="relative bg-gray-800 rounded group">
-                  {/* Radio para identificador só para texto */}
                   {comp.type === "texto" && (
                     <input
                       type="radio"
@@ -158,86 +138,69 @@ export default function CriarModelo() {
                     />
                   )}
 
-                  {/* Botão de remover para todos os tipos */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       if (
                         comp.type === "texto" &&
                         componentes.filter((c) => c.type === "texto").length === 1
-                      ) {
-                        // Não permite remover o único TextLine
-                        return;
-                      }
+                      ) return;
                       removerComponente(comp.i);
                     }}
-                    style={{backgroundColor:'rgba(201, 76, 76, 0)'}}
-                    className={` flex items-center justify-center w-[36px] h-[36px] absolute top-1 right-1 text-red-400 hover:text-red-600 transition-opacity duration-200
-                      ${
-                        comp.type === "texto" && componentes.filter((c) => c.type === "texto").length === 1
-                          ? "opacity-30 cursor-not-allowed"
-                          : "opacity-0 group-hover:opacity-100"
-                      }`}
-                    disabled={comp.type === "texto" && componentes.filter((c) => c.type === "texto").length === 1}
+                    style={{ backgroundColor: "rgba(201, 76, 76, 0)" }}
+                    className={`absolute top-1 right-1 w-[36px] h-[36px] flex items-center justify-center text-red-400 hover:text-red-600 transition-opacity duration-200 ${
+                      comp.type === "texto" &&
+                      componentes.filter((c) => c.type === "texto").length === 1
+                        ? "opacity-30 cursor-not-allowed"
+                        : "opacity-0 group-hover:opacity-100"
+                    }`}
+                    disabled={
+                      comp.type === "texto" &&
+                      componentes.filter((c) => c.type === "texto").length === 1
+                    }
                   >
-                      <p>X</p>
+                    <p>X</p>
                   </button>
-                  
-                  {/* Renderização do componente correto */}
+
                   {comp.type === "atributo" && (
                     <AtributoMod
                       formulaMod={selectedSystemData?.formulaModificador}
                       initialNome={componenteNomes[comp.i] || ""}
-                      onChange={(nome) => {
-                        setComponenteNomes((prev) => ({
-                          ...prev,
-                          [comp.i]: nome,
-                        }));
-                      }}
+                      onChange={(nome) =>
+                        setComponenteNomes((prev) => ({ ...prev, [comp.i]: nome }))
+                      }
                     />
                   )}
                   {comp.type === "bonus" && (
                     <BonusMod
                       initialNome={componenteNomes[comp.i] || ""}
-                      onChange={(nome) => {
-                        setComponenteNomes((prev) => ({
-                          ...prev,
-                          [comp.i]: nome,
-                        }));
-                      }}
+                      onChange={(nome) =>
+                        setComponenteNomes((prev) => ({ ...prev, [comp.i]: nome }))
+                      }
                     />
                   )}
                   {comp.type === "numero" && (
                     <NumeroMod
                       initialNome={componenteNomes[comp.i] || ""}
-                      onChange={(nome) => {
-                        setComponenteNomes((prev) => ({
-                          ...prev,
-                          [comp.i]: nome,
-                        }));
-                      }}
+                      onChange={(nome) =>
+                        setComponenteNomes((prev) => ({ ...prev, [comp.i]: nome }))
+                      }
                     />
                   )}
                   {comp.type === "texto" && (
                     <TextoMod
                       initialNome={componenteNomes[comp.i] || ""}
-                      onChange={(nome) => {
-                        setComponenteNomes((prev) => ({
-                          ...prev,
-                          [comp.i]: nome,
-                        }));
-                      }}
+                      onChange={(nome) =>
+                        setComponenteNomes((prev) => ({ ...prev, [comp.i]: nome }))
+                      }
                     />
                   )}
                   {comp.type === "textarea" && (
                     <TextAreaMod
                       initialNome={componenteNomes[comp.i] || ""}
-                      onChange={(nome) => {
-                        setComponenteNomes((prev) => ({
-                          ...prev,
-                          [comp.i]: nome,
-                        }));
-                      }}
+                      onChange={(nome) =>
+                        setComponenteNomes((prev) => ({ ...prev, [comp.i]: nome }))
+                      }
                     />
                   )}
                   {comp.type === "barra" && (
@@ -245,39 +208,24 @@ export default function CriarModelo() {
                       initialNome={componenteNomes[comp.i] || ""}
                       initialCor={componenteCores[comp.i] || "#a16207"}
                       onChange={(nome, _vidaAtual, _vidaTotal, cor) => {
-                        setComponenteNomes((prev) => ({
-                          ...prev,
-                          [comp.i]: nome,
-                        }));
-                        setComponenteCores((prev) => ({
-                          ...prev,
-                          [comp.i]: cor,
-                        }));
+                        setComponenteNomes((prev) => ({ ...prev, [comp.i]: nome }));
+                        setComponenteCores((prev) => ({ ...prev, [comp.i]: cor }));
                       }}
                     />
                   )}
                   {comp.type === "pericia" && (
                     <PericiaMod
-                      atributos={componentes.filter(c => c.type === "atributo").map(c => ({
-                        id: c.i,
-                        nome: componenteNomes[c.i] || "",
-                      }))}
-                      bonus={componentes.filter(c => c.type === "bonus").map(c => ({
-                        id: c.i,
-                        nome: componenteNomes[c.i] || "",
-                        valor: 0,
-                      }))}
+                      atributos={componentes
+                        .filter((c) => c.type === "atributo")
+                        .map((c) => ({ id: c.i, nome: componenteNomes[c.i] || "" }))}
+                      bonus={componentes
+                        .filter((c) => c.type === "bonus")
+                        .map((c) => ({ id: c.i, nome: componenteNomes[c.i] || "", valor: 0 }))}
                       initialNome={componenteNomes[comp.i] || ""}
                       initialAtributoId={periciaAtributos[comp.i] || ""}
                       onChange={(nome, atributoId) => {
-                        setComponenteNomes((prev) => ({
-                          ...prev,
-                          [comp.i]: nome,
-                        }));
-                        setPericiaAtributos((prev) => ({
-                          ...prev,
-                          [comp.i]: atributoId,
-                        }));
+                        setComponenteNomes((prev) => ({ ...prev, [comp.i]: nome }));
+                        setPericiaAtributos((prev) => ({ ...prev, [comp.i]: atributoId }));
                       }}
                     />
                   )}
