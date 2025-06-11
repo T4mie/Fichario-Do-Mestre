@@ -56,15 +56,14 @@ export default function PericiaDisplay({
         {nome}
       </div>
 
-      <div className="w-1/6 rounded bg-gray-900 text-gray-100 h-full flex items-center justify-center truncate">
+      <div className="w-2/6 rounded bg-gray-900 text-gray-100 h-full flex items-center justify-center truncate">
         {atributo?.nome || "Atributo"}
       </div>
 
       <select
         value={selectedBonusId}
         onChange={(e) => setSelectedBonusId(e.target.value)}
-        className="p-1 rounded bg-gray-700 text-white h-full w-2/6"
-        style={{ minWidth: 80 }}
+        className=" rounded bg-gray-700 text-white h-full w-1/6"
       >
         <option value="">-</option>
         {bonusList.map((b) => (
@@ -75,7 +74,7 @@ export default function PericiaDisplay({
         ))}
       </select>
 
-      <div className="ml-2 px-3 py-1 rounded bg-gray-900 text-gray-100 h-full w-1/6 font-bold text-lg flex items-center justify-center">
+      <div className="rounded bg-gray-900 text-gray-100 h-full w-1/6 font-bold text-lg flex items-center justify-center">
         {total >= 0 ? "+" : ""}
         {total}
       </div>

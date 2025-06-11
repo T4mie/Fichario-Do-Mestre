@@ -53,7 +53,7 @@ export default function PericiaMod({
       <select
         value={atributoId}
         onChange={(e) => setAtributoId(e.target.value)}
-        className="w-1/6 rounded bg-gray-900 text-gray-100 h-full flex items-center justify-center drag-cancel truncate"
+        className="w-2/6 rounded bg-gray-900 text-gray-100 h-full flex items-center justify-center drag-cancel truncate"
       >
         {atributos.map((a) => (
           <option key={a.id} value={a.id}>
@@ -64,8 +64,8 @@ export default function PericiaMod({
       <select
         value={selectedBonusId}
         onChange={handleBonusChange}
-        className="p-1 rounded bg-gray-700 text-white h-full w-2/6"
-        style={{ minWidth: 80 }}
+        className="rounded bg-gray-700 text-white h-full w-1/6  "
+        
       >
         <option value="">-</option>
         {bonus.map((b) => (
@@ -74,7 +74,7 @@ export default function PericiaMod({
           </option>
         ))}
       </select>
-      <div className="ml-2 px-3 py-1 rounded bg-gray-900 text-gray-100 h-full w-1/6 font-bold text-lg flex items-center justify-center">
+      <div className="rounded bg-gray-900 text-gray-100 h-full w-1/6 font-bold text-lg flex items-center justify-center">
         +0
       </div>
     </div>

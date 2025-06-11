@@ -13,6 +13,7 @@ import NumeroMod from "../components/modelCreate/NumeroLine";
 import BarraLine from "../components/modelCreate/BarraLine";
 
 import { useCriarModelo } from "../hooks/useCriarModelo";
+import { Toaster } from "sonner";
 
 export default function CriarModelo() {
   const {
@@ -51,6 +52,7 @@ export default function CriarModelo() {
 
   return (
     <div className="flex flex-col h-screen">
+      <Toaster richColors position="top-center"></Toaster>
       <div className="flex items-center gap-4 p-4 bg-gray-900 text-white">
         <select
           value={selectedSystemId}
