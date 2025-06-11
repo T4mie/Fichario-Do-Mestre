@@ -36,14 +36,18 @@ function Mainheader() {
     };
   }, [showDropdown]);
 
-  const handleAuthClick = async () => {
-    if (isAuthenticated) {
-      await logout(); // <-- chama sua função
+const handleAuthClick = async () => {
+  if (isAuthenticated) {
+    const confirmed = window.confirm("Tem certeza que deseja sair?");
+    if (confirmed) {
+      await logout(); // <-- usa sua função personalizada
       navigate("/");
-    } else {
-      navigate("/login");
     }
-  };
+  } else {
+    navigate("/login");
+  }
+};
+
 
   const goToUserPage = () => {
     navigate("/user");

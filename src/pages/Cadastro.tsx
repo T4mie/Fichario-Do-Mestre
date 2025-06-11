@@ -18,13 +18,32 @@ export default function CriarConta() {
       alert("As senhas não coincidem.");
       return;
     }
-
+    
     try {
-      await registerWithEmail(email, senha); // <- chama a função registerWithEmail do auth
+      await registerWithEmail(email, senha); 
       alert("Conta criada com sucesso!");
-      navigate("/user"); // <- redireciona após criar
-    } catch (error) {
-      alert("Erro ao criar conta: " + (error as Error).message);
+      navigate("/user"); 
+    } 
+    // tratamento de erros
+    catch (error:any) {
+        let mensagem = "Erro ao cadastrar.";
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            mensagem = "Este email já está em uso.";
+            break;
+          case "auth/invalid-email":
+            mensagem = "Email inválido.";
+            break;
+          case "auth/password-does-not-meet-requirements":
+            mensagem = "Senha inválida. A senha deve ter pelo menos:\n8 dígitos\nUma letra maiúscula\nUm número";
+            break;
+          case "auth/network-request-failed":
+            mensagem = "Erro de conexão. Verifique sua internet.";
+            break;
+          default:
+            mensagem = error.message;
+        }
+      alert(mensagem);     
     }
   };
 

@@ -14,8 +14,37 @@ export async function handleLogin(
     await loginWithEmail(email, senha);
     alert("Login feito com sucesso!");
     navigate("/user");
-  } catch (error) {
-    alert("Erro no login: " + (error as Error).message);
+  }
+  // tratamento de erros
+  catch (error: any) {
+    let errorMessage = "Erro desconhecido ao fazer login.";
+
+    if (error.code) {
+      switch (error.code) {
+        case "auth/invalid-email":
+          errorMessage = "Email inválido.";
+          break;
+        case "auth/user-not-found":
+          errorMessage = "Usuário ou senha incorreto.";
+          break;
+        case "auth/invalid-credential":
+          errorMessage = "Usuário ou senha incorreto.";
+          break;
+        case "auth/wrong-password":
+          errorMessage = "Usuário ou senha incorreto.";
+          break;
+        case "auth/too-many-requests":
+          errorMessage = "Muitas tentativas. Tente novamente mais tarde.";
+          break;
+        default:
+          errorMessage = "Erro ao fazer login: " + error.message;
+      }
+    } else if (error.message) {
+      // fallback genérico
+      errorMessage = error.message;
+    }
+
+    alert(errorMessage);
   }
 }
 
