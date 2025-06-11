@@ -23,7 +23,7 @@ export default function TextoMod({ onChange, initialNome }: TextoModProps) {
           placeholder="Nome do campo"
           value={nome}
           onChange={(e) => setNome(e.target.value)}
-          className="flex-1/3 h-[80%] flex items-center justify-center text-center bg-gray-700 rounded drag-cancel"
+          className="w-1/3 h-[80%] flex items-center justify-center text-center bg-gray-700 rounded drag-cancel"
         />
 
         <input
@@ -31,7 +31,7 @@ export default function TextoMod({ onChange, initialNome }: TextoModProps) {
           placeholder="Digite o texto aqui..."
           value={texto}
           onChange={(e) => setTexto(e.target.value)}
-          className="flex-2/3 h-[80%] rounded p-2 bg-gray-700 drag-cancel"
+          className="w-2/3 h-[80%] rounded p-2 bg-gray-700 drag-cancel"
         />
         <div></div>
       </div>

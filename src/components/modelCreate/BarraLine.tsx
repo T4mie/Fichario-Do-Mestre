@@ -38,10 +38,10 @@ export default function BarraLine({
         placeholder="Nome do campo"
         value={nome}
         onChange={(e) => setNome(e.target.value)}
-        className="w-full mb-2 p-1 flex-1/4 font-semibold bg-gray-700 text-white  rounded drag-cancel text-center"
+        className="w-full h-1/6 mb-2 p-2 font-semibold text-center bg-gray-700 text-white rounded select-none flex items-center justify-center"
       />
       {/* Campos numéricos ocupando a linha inteira */}
-      <div className="flex flex-1/2 w-full gap-2 mb-2">
+      <div className="flex h-3/6 w-full gap-2 mb-2">
         <input
           type="number"
           min={0}
@@ -66,7 +66,7 @@ export default function BarraLine({
         />
       </div>
       {/* Barra de progresso com input de cor */}
-      <div className="w-full h-5 bg-gray-600 rounded relative flex items-center">
+      <div className="w-full h-1/6 bg-gray-600 rounded relative flex items-center">
         <div
           className="h-5 rounded transition-all duration-300"
           style={{

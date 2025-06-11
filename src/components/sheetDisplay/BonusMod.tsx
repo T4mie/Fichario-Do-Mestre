@@ -42,14 +42,14 @@ export default function BonusDisplay({
 
   return (
   <div className="drag-handle rounded bg-gray-800 shadow w-full h-full flex flex-col items-center p-2 gap-1">
-    <div className="w-full basis-1/3 flex items-center justify-center font-semibold drag-cancel text-sm text-center truncate rounded bg-gray-700">
+    <div className="w-full h-1/3 flex items-center justify-center font-semibold drag-cancel text-sm text-center truncate rounded bg-gray-700">
       {nome}
     </div>
     <input
       type="text"
       value={input}
       onChange={handleInput}
-      className="w-full basis-2/3 text-2xl text-center rounded drag-cancel bg-gray-700"
+      className="w-full h-2/3 text-2xl text-center rounded drag-cancel bg-gray-700"
       placeholder="+0"
       inputMode="text"
     />

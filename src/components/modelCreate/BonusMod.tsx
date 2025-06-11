@@ -50,13 +50,13 @@ export default function BonusMod({ onChange, initialNome }: BonusModProps) {
         placeholder="Nome do Bônus"
         value={nome}
         onChange={(e) => setNome(e.target.value)}
-        className="w-full flex-1/3 font-semibold drag-cancel text-sm text-center truncate rounded bg-gray-700"
+        className="w-full h-1/3 font-semibold drag-cancel text-sm text-center truncate rounded bg-gray-700"
       />
       <input
         type="text"
         value={input}
         onChange={handleInput}
-        className=" w-full flex-2/3 text-2xl text-center rounded drag-cancel bg-gray-700"
+        className=" w-full h-2/3 text-2xl text-center rounded drag-cancel bg-gray-700"
         placeholder="+0"
         inputMode="text"
       />

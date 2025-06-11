@@ -30,13 +30,13 @@ export default function BarraDisplay({
       : 0;
 
   return (
-    <div className="flex flex-col w-full h-full gap-1 rounded bg-gray-800 shadow p-2">
+    <div className="flex flex-col w-full h-full gap-1 rounded bg-gray-800 shadow p-2 items-center">
       {/* Nome do campo no topo */}
-      <div className="w-full flex-1/4 mb-2 p-2 font-semibold bg-gray-700 text-white rounded text-center select-none">
+      <div className="w-full h-1/6 mb-2 p-2 font-semibold bg-gray-700 text-white rounded select-none flex items-center justify-center">
         {nome}
       </div>
       {/* Campos numéricos ocupando a linha inteira */}
-      <div className="flex flex-1/2 w-full gap-2 mb-2">
+      <div className="flex h-4/6 w-full gap-2 mb-2">
         <input
           type="number"
           min={0}
@@ -61,7 +61,7 @@ export default function BarraDisplay({
         />
       </div>
       {/* Barra de progresso */}
-      <div className="w-full h-5 bg-gray-600 rounded relative flex items-center">
+      <div className="w-full h-1/6 bg-gray-600 rounded relative flex items-center">
         <div
           className="h-5 rounded transition-all duration-300"
           style={{

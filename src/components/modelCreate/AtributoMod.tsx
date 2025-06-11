@@ -26,16 +26,16 @@ export default function AtributoMod({ formulaMod, onChange, initialNome }: Atrib
         placeholder="Nome do Atributo"
         value={nome}
         onChange={(e) => setNome(e.target.value)}
-        className="w-full flex-1/4 bg-gray-700 rounded p-1 font-semibold drag-cancel text-sm text-center truncate"
+        className="w-full h-1/4  bg-gray-700 rounded p-1 font-semibold drag-cancel text-sm text-center truncate"
       />
       <input
           type="number"
           value={valor}
           onChange={(e) => setValor(parseInt(e.target.value))}
-          className="w-full flex-2/4 text-2xl text-center bg-gray-700 drag-cancel rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="w-full h-2/4 text-2xl text-center bg-gray-700 drag-cancel rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           placeholder="Valor"
       />
-      <div className="text-[16px] text-white w-full flex-1/4 rounded text-center drag-hadle content-center bg-gray-700">
+      <div className=" h-1/4  text-white w-full rounded text-center drag-hadle content-center bg-gray-700" style={{fontSize:"auto"}}>
           {modificador >= 0 ? "+" : ""}
           {modificador}
       </div>

@@ -23,7 +23,7 @@ export default function NumeroDisplay({
   }
 
   return (
-    <div className="w-full h-full flex flex-row justify-center bg-gray-800 shadow text-white items-center gap-2 rounded">
+    <div className="w-full h-full flex flex-row justify-center bg-gray-800 shadow text-white items-center gap-2 rounded p-1">
       <div></div>
       <div
         className="font-semibold w-2/3 text-center truncate drag drag-cancel"
@@ -35,7 +35,7 @@ export default function NumeroDisplay({
         type="text"
         value={valor}
         onChange={handleInput}
-        className="ml-auto w-1/3 rounded p-2 bg-gray-700  text-white text-center drag-cancel"
+        className="w-1/3 h-full rounded bg-gray-700  text-white text-center drag-cancel"
         placeholder="0"
         inputMode="numeric"
       />

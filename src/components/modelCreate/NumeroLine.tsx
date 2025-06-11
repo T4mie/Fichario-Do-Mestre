@@ -13,7 +13,7 @@ export default function NumeroMod({ onChange, initialNome }: NumeroModProps) {
   }, [nome]);
 
   return (
-    <div className="drag-handle w-full h-full flex flex-row justify-center bg-gray-800 shadow text-white items-center gap-2 rounded ">
+    <div className="drag-handle w-full h-full flex flex-row justify-center bg-gray-800 shadow text-white items-center gap-2 rounded p-1 ">
       <div></div>
       <input
         type="text"
@@ -24,7 +24,7 @@ export default function NumeroMod({ onChange, initialNome }: NumeroModProps) {
       />
       <input
         type="number"
-        className="ml-auto w-1/3 rounded p-2 bg-gray-700  text-white text-center drag-cancel [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        className=" w-1/3 rounded h-full bg-gray-700  text-white text-center drag-cancel [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         placeholder="0"
       />
       <div></div>
