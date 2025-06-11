@@ -42,12 +42,12 @@ export default function PericiaMod({
         placeholder="Nome da Perícia"
         value={nome}
         onChange={(e) => setNome(e.target.value)}
-        className="font-semibold basis-3/6 truncate bg-gray-700 h-full flex items-center px-2 drag-cancel rounded"
+        className="font-semibold w-3/6 truncate bg-gray-700 h-full flex items-center px-2 drag-cancel rounded"
       />
       <select
         value={atributoId}
         onChange={(e) => setAtributoId(e.target.value)}
-        className="basis-1/6 rounded bg-gray-900 text-gray-100 h-full flex items-center justify-center truncate drag-cancel"
+        className="w-1/6 rounded bg-gray-900 text-gray-100 h-full flex items-center justify-center drag-cancel truncate"
       >
         {atributos.map((a) => (
           <option key={a.id} value={a.id}>
@@ -58,7 +58,7 @@ export default function PericiaMod({
       <select
         value={selectedBonusId}
         onChange={handleBonusChange}
-        className="p-1 rounded bg-gray-700 text-white h-full baisis-2/6"
+        className="p-1 rounded bg-gray-700 text-white h-full w-2/6"
         style={{ minWidth: 80 }}
       >
         <option value="">-</option>
@@ -68,7 +68,7 @@ export default function PericiaMod({
           </option>
         ))}
       </select>
-      <div className="ml-2 px-3 py-1 rounded bg-gray-900 text-gray-100 h-full basis-1/6 font-bold text-lg flex items-center justify-center">
+      <div className="ml-2 px-3 py-1 rounded bg-gray-900 text-gray-100 h-full w-1/6 font-bold text-lg flex items-center justify-center">
         +0
       </div>
     </div>

@@ -56,7 +56,7 @@ export default function CriarModelo() {
         <select
           value={selectedSystemId}
           onChange={handleSystemChange}
-          className="border p-2 rounded text-white"
+          className="border p-2 rounded text-white bg-gray-800"
         >
           <option value="">Selecione o Sistema...</option>
           {systems.map((system) => (
@@ -71,7 +71,7 @@ export default function CriarModelo() {
           value={modelName}
           onChange={(e) => setModelName(e.target.value)}
           placeholder="Nome do Modelo"
-          className="border p-2 rounded text-white"
+          className="border p-2 rounded text-white bg-gray-800"
         />
         <div className="overflow-x-auto whitespace-nowrap p-2">
           <div className="flex flex-row gap-x-2">

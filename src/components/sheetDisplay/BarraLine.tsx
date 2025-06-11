@@ -29,9 +29,9 @@ export default function BarraDisplay({
       : 0;
 
   return (
-    <div className="flex flex-col w-full h-full gap-1 border rounded bg-gray-800 shadow p-2">
+    <div className="flex flex-col w-full h-full gap-1 rounded bg-gray-800 shadow p-2">
       {/* Nome do campo no topo */}
-      <div className="w-full flex-1/4 mb-2 p-2 font-semibold bg-gray-700 text-white border-b rounded text-center select-none">
+      <div className="w-full flex-1/4 mb-2 p-2 font-semibold bg-gray-700 text-white rounded text-center select-none">
         {nome}
       </div>
       {/* Campos numéricos ocupando a linha inteira */}

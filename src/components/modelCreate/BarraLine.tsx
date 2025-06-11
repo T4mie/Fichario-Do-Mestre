@@ -31,14 +31,14 @@ export default function BarraLine({
       : 0;
 
   return (
-    <div className="drag-handle flex flex-col w-full h-full gap-1 border rounded bg-gray-800 shadow p-2 justify-center">
+    <div className="drag-handle flex flex-col w-full h-full gap-1  rounded bg-gray-800 shadow p-2 justify-center">
       {/* Nome do campo no topo */}
       <input
         type="text"
         placeholder="Nome do campo"
         value={nome}
         onChange={(e) => setNome(e.target.value)}
-        className="w-full mb-2 p-1 flex-1/4 font-semibold bg-gray-700 text-white border-b rounded drag-cancel text-center"
+        className="w-full mb-2 p-1 flex-1/4 font-semibold bg-gray-700 text-white  rounded drag-cancel text-center"
       />
       {/* Campos numéricos ocupando a linha inteira */}
       <div className="flex flex-1/2 w-full gap-2 mb-2">

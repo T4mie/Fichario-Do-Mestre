@@ -14,13 +14,13 @@ export default function TextAreaMod({ onChange, initialNome }: TextAreaModProps)
   }, [nome, texto]);
 
   return (
-    <div className="flex flex-col h-full border rounded bg-gray-800 shadow p-2 drag-handle">
+    <div className="flex flex-col h-full rounded bg-gray-800 shadow p-2 drag-handle">
       <input
         type="text"
         placeholder="Nome do campo"
         value={nome}
         onChange={(e) => setNome(e.target.value)}
-        className="mb-2 p-1 font-semibold bg-gray-700 text-white border-b rounded drag-cancel"
+        className="mb-2 p-1 font-semibold bg-gray-700 text-white  rounded drag-cancel"
       />
       <div className="flex-1 flex justify-end">
         <textarea
