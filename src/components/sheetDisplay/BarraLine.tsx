@@ -63,7 +63,7 @@ export default function BarraDisplay({
       {/* Barra de progresso */}
       <div className="w-full h-1/6 bg-gray-600 rounded relative flex items-center">
         <div
-          className="h-5 rounded transition-all duration-300"
+          className="h-full rounded transition-all duration-300"
           style={{
             width: `${percent}%`,
             backgroundColor: cor,

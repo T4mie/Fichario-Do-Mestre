@@ -19,12 +19,12 @@ export default function TextAreaDisplay({
 
   return (
     <div className="flex flex-col h-full rounded bg-gray-800 shadow text-white p-2">
-      <div className="mb-2 font-semibold h-1/6">{nome}</div>
-      <div className="flex-1 flex-col justify-end h-5/6">
+      <div className="font-semibold h-1/6">{nome}</div>
+      <div className="flex h-6/6">
         <textarea
           value={texto}
           onChange={(e) => setTexto(e.target.value)}
-          className="w-full h-full min-h-[80px] max-h-[200px] p-2 rounded bg-gray-700  text-white resize-none"
+          className="w-full h-full p-2 rounded bg-gray-700  text-white resize-none"
           placeholder="Digite o texto..."
         />
       </div>
