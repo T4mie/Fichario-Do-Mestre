@@ -20,7 +20,7 @@ export default function TextoDisplay({
   }, [texto]);
 
   return (
-    <div className="w-full h-full flex flex-row justify-center bg-gray-800 items-center gap-2">
+    <div className="w-full h-full flex flex-row justify-center bg-gray-800 items-center gap-2 rounded">
       <div></div>
       <div className="flex-1/3 h-[80%] flex items-center justify-center text-center bg-gray-700 rounded">
         {nome}

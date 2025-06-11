@@ -52,7 +52,7 @@ export default function PericiaDisplay({
 
   return (
     <div className="w-full h-full flex flex-row gap-2  rounded bg-gray-800 shadow items-center p-2">
-      <div className="font-semibold basis-3/6 truncate bg-gray-700 h-full flex items-center px-2">
+      <div className="font-semibold basis-3/6 truncate bg-gray-700 h-full flex items-center px-2 rounded">
         {nome}
       </div>
 
